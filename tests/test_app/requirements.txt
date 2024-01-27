@@ -1,0 +1,7 @@
+Django>4,<5
+whitenoise
+gunicorn
+psycopg2-binary
+factory-boy
+docutils
+importlib-metadata==4.13.0

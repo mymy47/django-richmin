@@ -1,0 +1,15 @@
+*.pyc
+.venv*
+venv*/
+.env*/
+env*/
+*.egg-info
+tmp.*
+*.tmp
+*.tmp.*
+.data/
+build/
+.eggs/
+dist/
+/.idea/
+*.sqlite3

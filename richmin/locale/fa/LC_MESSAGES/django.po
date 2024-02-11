@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-11 17:09+0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+
+msgid "First, enter a username and password. Then, you'll be able to edit more user options."
+msgstr "ابتدا، یک نام کاربری و گذرواژه وارد کنید. سپس، شما می توانید موارد دیگری را ویرایش کنید."
+
+msgid "Account"
+msgstr "حساب کاربری"
+
+msgid "See Profile"
+msgstr "مشاهده پروفایل"
+
+msgid "Dashboard"
+msgstr "میزکار"
+
+msgid "richmin version"
+msgstr "نسخه richmin"
+
+msgid "Copyright"
+msgstr "Copyright"
+
+msgid "All rights reserved."
+msgstr "همه حقوق محفوظ است."
+
+msgid "UI Configuration"
+msgstr "تنظیمات رابط کاربری"
+
+msgid "Copy this info your settings file to persist these UI changes"
+msgstr "این مشخصات را در فایل تنظیمات خود کپی کنید تا این تغییرات رابط کاربری اعمال شود"
+
+msgid "Confirm Import"
+msgstr "تایید Import"
+
+msgid "Actions"
+msgstr "عملیات ها"
+
+msgid "Some rows failed to validate"
+msgstr "اعتبارسنجی بعضی از سطر ها ناموفق بود"
+
+msgid "Please correct these errors in your data where possible, then reupload it using the form above."
+msgstr "لطفا این خطاها را در دیتای خود اصلاح کنید، سپس دوباره به وسیله فرم بالا آپلود کنید."
+
+msgid "Row"
+msgstr "سطر"
+
+msgid "Non field specific"
+msgstr "زمینه غیر خاص"
+
+#, python-format
+msgid "%(timesince)s ago"
+msgstr "%(timesince)s قبل"
+
+msgid "This object doesn't have a change history. It probably wasn't added via this admin site."
+msgstr "این آبجکت تاریخچه تغییرات ندارد. ممکن است توسط این سایت مدیریت اضافه نشده باشد."
+
+msgid "Popup closing..."
+msgstr "بسته شدن پاپ آپ..."
+
+msgid "The admin documentation system requires Python's <a href=\"%(link)s\">docutils</a> library."
+msgstr "The admin documentation system requires Python's <a href=\"%(link)s\">docutils</a> library."
+
+msgid "View function: <code>%(full_name)s</code>. Name: <code>%(url_name)s</code>."
+msgstr "View function: <code>%(full_name)s</code>. Name: <code>%(url_name)s</code>."
+
+msgid "General"
+msgstr "کلی"
+
+msgid "Please enter your old password, for security's sake, and then enter your new password twice so we can verify you typed it in correctly."
+msgstr "لطفا گذرواژه قبلی خود را وارد کنید، برای ملاحظات امنیتی، و سپس گذرواژه جدید خود را دو بار وارد کنید که ما درستی آن را تشخیص دهیم."
+
+msgid "Deleted “{object}”."
+msgstr "حذف شده “{object}”."
+
+#, python-brace-format
+msgid "Could not reverse url from {instance}"
+msgstr "نشانی وب از {instance} برگردانده نشد"

@@ -30,8 +30,12 @@
     {% endif %}
     {% if show_save_and_continue %}
       <div class="form-group">
-        <input type="submit" class="btn {{ richmin_ui.button_classes.info }} form-control" value="
-          {% if can_change %}{% trans 'Save and continue editing' %}{% else %}{% trans 'Save and view' %}{% endif %}"
+        <input type="submit" class="btn {{ richmin_ui.button_classes.info }} form-control"
+          {% if can_change %}
+               value="{% trans 'Save and continue editing' %}"
+          {% else %}
+               value="{% trans 'Save and view' %}"
+          {% endif %}
                name="_continue">
       </div>
     {% endif %}

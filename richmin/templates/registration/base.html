@@ -32,6 +32,12 @@
   <!-- Custom fixes for django -->
   <link rel="stylesheet" href="{% static "richmin/css/main.css" %}">
 
+  {% if LANGUAGE_BIDI %}
+    <link rel="stylesheet" href="{% static "richmin/css/rtl.css" %}">
+  {% else %}
+    <link rel="stylesheet" href="{% static "richmin/css/ltr.css" %}">
+  {% endif %}
+
   {% if richmin_settings.custom_css %}
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static richmin_settings.custom_css %}">

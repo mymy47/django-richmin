@@ -150,7 +150,7 @@ RICHMIN_SETTINGS: Dict[str, Any] = {
     # Welcome text on the login screen
     'welcome_sign': 'Welcome to the library',
     # Copyright on the footer
-    'copyright': 'Acme Library Ltd',
+    'copyright': 'Richmin Library',
     # List of model admins to search from the search bar, search bar omitted if excluded
     # If you want to use a single search field you dont need to use a list, you can use a simple string
     'search_model': ['auth.User', 'auth.Group'],

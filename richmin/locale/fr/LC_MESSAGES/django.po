@@ -101,4 +101,3 @@ msgstr "« {object} » supprimé."
 #, python-brace-format
 msgid "Could not reverse url from {instance}"
 msgstr "Impossible de résoudre l'URL de {instance}"
-

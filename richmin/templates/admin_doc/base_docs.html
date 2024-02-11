@@ -2,32 +2,35 @@
 
 {% block extrastyle %}
 
-<style>
+  <style>
     .literal-block, .doctest-block {
-        background: #272822;
-        color: #f8f8f2;
+      background: #272822;
+      color: #f8f8f2;
     }
+
     .module {
-        padding: 20px;
+      padding: 20px;
     }
+
     .card-header .card-title a {
-        color: #ffffff !important;
+      color: #ffffff !important;
     }
+
     .card-header .card-title a:hover {
-        color: #f8f8f2 !important;
+      color: #f8f8f2 !important;
     }
-</style>
+  </style>
 {% endblock %}
 
 {% block content %}
-{% block alerts %}{% endblock %}
-<div id="content-main" class=col-12>
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body pad table-responsive">
+  {% block alerts %}{% endblock %}
+  <div id="content-main" class=col-12>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body pad table-responsive">
           {% block docs_content %}{% endblock %}
+        </div>
       </div>
     </div>
   </div>
-</div>
 {% endblock %}

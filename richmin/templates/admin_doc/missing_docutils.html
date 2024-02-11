@@ -2,17 +2,19 @@
 {% load i18n %}
 
 {% block breadcrumbs %}
-<ol class="breadcrumb">
+  <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
     <li class="breadcrumb-item active">{% trans 'Documentation' %}</li>
-</ol>
+  </ol>
 {% endblock %}
 
 {% block title %}{% trans 'Please install docutils' %}{% endblock %}
 {% block content_title %}{% trans 'Documentation' %}{% endblock %}
 
 {% block docs_content %}
-  <h3>{% blocktrans with "http://docutils.sf.net/" as link %}The admin documentation system requires Python's <a href="{{ link }}">docutils</a> library.{% endblocktrans %}</h3>
+  <h3>{% blocktrans with "http://docutils.sf.net/" as link %}The admin documentation system requires Python's
+    <a href="{{ link }}">docutils</a> library.{% endblocktrans %}</h3>
 
-  <p>{% blocktrans with "http://docutils.sf.net/" as link %}Please ask your administrators to install <a href="{{ link }}">docutils</a>.{% endblocktrans %}</p>
+  <p>{% blocktrans with "http://docutils.sf.net/" as link %}Please ask your administrators to install
+    <a href="{{ link }}">docutils</a>.{% endblocktrans %}</p>
 {% endblock %}

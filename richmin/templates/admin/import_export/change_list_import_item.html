@@ -2,7 +2,7 @@
 {% get_richmin_ui_tweaks as richmin_ui %}
 
 {% if has_import_permission %}
-<a href='{% url opts|admin_urlname:"import" %}' class="import_link btn {{ richmin_ui.button_classes.secondary }}">
+  <a href='{% url opts|admin_urlname:"import" %}' class="import_link btn {{ richmin_ui.button_classes.secondary }}">
     <i class="fas fa-file-import"></i> {% trans "Import" %}
-</a>
+  </a>
 {% endif %}

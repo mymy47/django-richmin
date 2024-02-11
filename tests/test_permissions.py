@@ -10,11 +10,15 @@ def test_no_delete_permission(client):
     """
     When our user has no delete permission, they dont see things they are not supposed to
     """
-    user = UserFactory(permissions=["books.view_book"])
+    user = UserFactory(permissions=['books.view_book'])
     book = BookFactory()
 
-    url = reverse("admin:books_book_change", args=(book.pk,))
-    delete_url = reverse("admin:books_book_delete", args=(book.pk,))
+    url = reverse(
+        'admin:books_book_change', args=(book.pk,)
+    )
+    delete_url = reverse(
+        'admin:books_book_delete', args=(book.pk,)
+    )
     client.force_login(user)
 
     response = client.get(url)
@@ -26,9 +30,9 @@ def test_no_add_permission(client):
     """
     When our user has no add permission, they dont see things they are not supposed to
     """
-    user = UserFactory(permissions=["books.view_book"])
-    url = reverse("admin:books_book_changelist")
-    add_url = reverse("admin:books_book_add")
+    user = UserFactory(permissions=['books.view_book'])
+    url = reverse('admin:books_book_changelist')
+    add_url = reverse('admin:books_book_add')
 
     client.force_login(user)
     response = client.get(url)
@@ -43,13 +47,13 @@ def test_delete_but_no_view_permission(client):
 
     As in Plain old Django Admin
     """
-    user = UserFactory(permissions=["books.delete_book"])
+    user = UserFactory(permissions=['books.delete_book'])
 
-    url = reverse("admin:index")
+    url = reverse('admin:index')
     client.force_login(user)
 
     response = client.get(url)
-    assert parse_sidemenu(response) == {"Global": ["/en/admin/"], "Books": [None]}
+    assert parse_sidemenu(response) == {'Global': ['/en/admin/'], 'Books': [None]}
 
 
 @pytest.mark.django_db
@@ -61,8 +65,8 @@ def test_no_permission(client):
     """
     user = UserFactory(permissions=[])
 
-    url = reverse("admin:index")
+    url = reverse('admin:index')
     client.force_login(user)
 
     response = client.get(url)
-    assert parse_sidemenu(response) == {"Global": ["/en/admin/"]}
+    assert parse_sidemenu(response) == {'Global': ['/en/admin/']}

@@ -11,16 +11,16 @@ def parse_sidemenu(response):
     Convert the side menu to a dict keyed on app name, containing a list of links
     """
     menu = defaultdict(list)
-    current_app = "Global"
-    soup = BeautifulSoup(response.content, "html.parser")
+    current_app = 'Global'
+    soup = BeautifulSoup(response.content, 'html.parser')
 
-    for li in soup.find(id="richy-sidebar").find("ul").find_all("li"):
-        if "nav-header" in li["class"]:
+    for li in soup.find(id='richy-sidebar').find('ul').find_all('li'):
+        if 'nav-header' in li['class']:
             current_app = li.text.strip()
 
-        elif "nav-item" in li["class"]:
-            href = li.find("a")
-            menu[current_app].append(href["href"] if href else None)
+        elif 'nav-item' in li['class']:
+            href = li.find('a')
+            menu[current_app].append(href['href'] if href else None)
 
     return menu
 
@@ -30,19 +30,19 @@ def parse_topmenu(response):
     Convert the top menu to a list of dicts representing menus, items with submenus will have key 'children'
     """
     menu = []
-    soup = BeautifulSoup(response.content, "html.parser")
+    soup = BeautifulSoup(response.content, 'html.parser')
 
-    for li in soup.find(id="richy-navbar").find("ul").find_all("li"):
-        anchor = li.find("a")
+    for li in soup.find(id='richy-navbar').find('ul').find_all('li'):
+        anchor = li.find('a')
 
         # Skip brand link and menu button
-        if type(anchor.contents[0]) == Tag:
+        if type(anchor.contents[0]) is Tag:
             continue
 
-        item = {"name": anchor.text.strip(), "link": anchor["href"]}
-        dropdown = li.find("div", class_="dropdown-menu")
+        item = {'name': anchor.text.strip(), 'link': anchor['href']}
+        dropdown = li.find('div', class_='dropdown-menu')
         if dropdown:
-            item["children"] = [{"name": a.text.strip(), "link": a["href"]} for a in dropdown.find_all("a")]
+            item['children'] = [{'name': a.text.strip(), 'link': a['href']} for a in dropdown.find_all('a')]
 
         menu.append(item)
 
@@ -54,10 +54,10 @@ def parse_usermenu(response):
     Convert the user menu to a list of dicts representing menus
     """
     menu = []
-    soup = BeautifulSoup(response.content, "html.parser")
+    soup = BeautifulSoup(response.content, 'html.parser')
 
-    for link in soup.find(id="richy-usermenu").find_all("a"):
-        item = {"name": link.text.strip(), "link": link["href"]}
+    for link in soup.find(id='richy-usermenu').find_all('a'):
+        item = {'name': link.text.strip(), 'link': link['href']}
         menu.append(item)
 
     return menu

@@ -1,18 +1,11 @@
 from random import choice
 
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group, User
 from django.core.management import BaseCommand
 
-from ...models import Book, Author, Genre
-from ....factories import (
-    BookLoanFactory,
-    UserFactory,
-    AuthorFactory,
-    BookFactory,
-    GroupFactory,
-    LibraryFactory,
-)
-from ....loans.models import Library, BookLoan
+from ...models import Author, Book, Genre
+from ....factories import AuthorFactory, BookFactory, BookLoanFactory, GroupFactory, LibraryFactory, UserFactory
+from ....loans.models import BookLoan, Library
 
 
 class Command(BaseCommand):
@@ -26,9 +19,9 @@ class Command(BaseCommand):
 
         library = LibraryFactory()
         UserFactory(
-            username="test@test.com",
-            email="test@test.com",
-            password="test",
+            username='test@test.com',
+            email='test@test.com',
+            password='test',
             is_superuser=True,
         )
 
@@ -40,4 +33,4 @@ class Command(BaseCommand):
             for book in BookFactory.create_batch(5, author=author, library=library):
                 BookLoanFactory(book=book, borrower=choice(users))
 
-        self.stdout.write("All Data reset")
+        self.stdout.write('All Data reset')

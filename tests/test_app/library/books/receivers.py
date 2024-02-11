@@ -8,5 +8,5 @@ def add_user_levels_actions(sender, instance, **kwargs):
     """
     Dont allow our test user to change their password
     """
-    if instance.username == "test@test.com":
-        instance.set_password("test")
+    if instance.username == 'test@test.com':
+        instance.set_password('test')

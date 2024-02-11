@@ -1,6 +1,1 @@
-import django
-
-version = '2.6.0'
-
-if django.VERSION < (3, 2):
-    default_app_config = 'richmin.apps.richminConfig'
+version = '0.1.3'

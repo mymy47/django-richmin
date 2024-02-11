@@ -340,3 +340,33 @@ def get_ui_tweaks() -> Dict:
         ret['dark_mode_theme'] = {'name': dark_mode_theme, 'src': static(THEMES[dark_mode_theme])}
 
     return ret
+
+
+# TODO: SET DEFAULT SETTINGS TO THIS
+
+RICHMIN_UI_TWEAKS = {
+    'navbar_small_text': False,
+    'footer_small_text': False,
+    'body_small_text': True,
+    'brand_small_text': False,
+    'brand_colour': 'navbar-gray',
+    'navbar_fixed': True,
+    'sidebar_fixed': True,
+    'sidebar_nav_small_text': False,
+    'sidebar_disable_expand': False,
+    'sidebar_nav_child_indent': False,
+    'sidebar_nav_compact_style': False,
+    'sidebar_nav_legacy_style': False,
+    'sidebar': 'sidebar-dark-info',
+    'theme': 'default',
+    'dark_mode_theme': None,
+    'button_classes': {
+        'primary': 'btn-outline-primary',
+        'secondary': 'btn-outline-secondary',
+        'info': 'btn-info',
+        'warning': 'btn-warning',
+        'danger': 'btn-danger',
+        'success': 'btn-success'
+    },
+    'actions_sticky_top': True
+}

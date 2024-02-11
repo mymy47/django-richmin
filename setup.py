@@ -1,4 +1,9 @@
+import os
+
 from setuptools import find_packages, setup
+
+with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
+    README = readme.read()
 
 setup(
     name='django-richmin',
@@ -8,6 +13,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     description='Customized lte-bootstrap django admin theme with some useful tools',
+    long_description=README,
+    long_description_content_type='text/markdown',
     python_requires='>=3.6',
     author='my47',
     author_email='mymy47@gmail.com',

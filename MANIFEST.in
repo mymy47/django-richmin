@@ -1,0 +1,4 @@
+recursive-exclude tests *
+graft richmin
+global-exclude */__pycache__/*
+global-exclude *.pyc

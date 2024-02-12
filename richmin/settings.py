@@ -113,11 +113,11 @@ DEFAULT_UI_TWEAKS: Dict[str, Any] = {
     # Small text on the footer
     'footer_small_text': False,
     # Small text everywhere
-    'body_small_text': False,
+    'body_small_text': True,
     # Small text on the brand/logo
     'brand_small_text': False,
     # brand/logo background colour
-    'brand_colour': False,
+    'brand_colour': 'navbar-gray',
     # Link colour
     'accent': 'accent-primary',
     # topmenu colour
@@ -125,15 +125,15 @@ DEFAULT_UI_TWEAKS: Dict[str, Any] = {
     # topmenu border
     'no_navbar_border': False,
     # Make the top navbar sticky, keeping it in view as you scroll
-    'navbar_fixed': False,
+    'navbar_fixed': True,
     # Whether to constrain the page to a box (leaving big margins at the side)
     'layout_boxed': False,
     # Make the footer sticky, keeping it in view all the time
     'footer_fixed': False,
     # Make the sidebar sticky, keeping it in view as you scroll
-    'sidebar_fixed': False,
+    'sidebar_fixed': True,
     # sidemenu colour
-    'sidebar': 'sidebar-dark-primary',
+    'sidebar': 'sidebar-dark-info',
     # sidemenu small text
     'sidebar_nav_small_text': False,
     # Disable expanding on hover of collapsed sidebar
@@ -152,13 +152,14 @@ DEFAULT_UI_TWEAKS: Dict[str, Any] = {
     'dark_mode_theme': None,
     # The classes/styles to use with buttons
     'button_classes': {
-        'primary': 'btn-primary',
-        'secondary': 'btn-secondary',
+        'primary': 'btn-outline-primary',
+        'secondary': 'btn-outline-secondary',
         'info': 'btn-info',
         'warning': 'btn-warning',
         'danger': 'btn-danger',
-        'success': 'btn-success',
+        'success': 'btn-success'
     },
+    'actions_sticky_top': True
 }
 
 THEMES = {

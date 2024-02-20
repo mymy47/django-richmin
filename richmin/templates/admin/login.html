@@ -65,6 +65,8 @@
         </div>
       </div>
     {% endif %}
+    {% block before_submit %}
+    {% endblock %}
     <div class="row">
       <div class="col-12">
         <button type="submit" class="btn {{ richmin_ui.button_classes.primary }} btn-block">

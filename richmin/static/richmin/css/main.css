@@ -931,3 +931,7 @@ body.richmin-login-page {
   float: left;
   width: 100%;
 }
+
+.brand-link .brand-image{
+  background-color: #ffffff;
+}

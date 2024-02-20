@@ -99,7 +99,7 @@ DEFAULT_SETTINGS: Dict[str, Any] = {
     # override change forms on a per modeladmin basis
     'changeform_format_overrides': {},
     # Add a language dropdown into the admin
-    'language_chooser': False,
+    'language_chooser': True,
 }
 
 #######################################

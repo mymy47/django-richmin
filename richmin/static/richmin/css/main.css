@@ -52,7 +52,7 @@ div.inline-related {
 }
 
 [class*=sidebar-dark-] .nav-header {
-  color: rgb(255, 255, 255, 0.3);
+  color: rgb(129, 129, 129);
   margin-top: 1rem;
 }
 
@@ -1058,4 +1058,13 @@ select[multiple] {
   /* Allow HTML size attribute to override the height in the rule above. */
   height: auto;
   min-height: 150px;
+}
+
+.nav-tabs .nav-link {
+  font-weight: bold;
+}
+
+.card {
+  box-shadow: 0 0 1px rgba(0, 0, 0, .125), 0 1px 3px rgba(0, 0, 0, .2);
+  margin: 0 0.1rem 0.1rem;
 }

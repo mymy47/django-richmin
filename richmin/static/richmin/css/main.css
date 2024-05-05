@@ -986,6 +986,8 @@ textarea {
 }
 
 :root {
+  --primary-fg: #fff;
+
   --body-fg: #333;
   --body-bg: #fff;
   --body-quiet-color: #666;

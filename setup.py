@@ -8,7 +8,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 setup(
     name='django-richmin',
     url='https://github.com/mymy47/django-richmin',
-    version='0.1.18',
+    version='0.1.21',
     license='MIT License',
     packages=find_packages(),
     include_package_data=True,

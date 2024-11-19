@@ -283,9 +283,18 @@ def richmin_list_filter(cl: ChangeList, spec: ListFilter) -> SafeText:
             if key == field_key:
                 value = query_parts[key][0]
                 matched_key = key
-            elif key.startswith(field_key + '__') or '__' + field_key + '__' in key:
-                value = query_parts[key][0]
-                matched_key = key
+            else:
+                if hasattr(spec, 'lookup_kwarg'):
+                    if key == spec.lookup_kwarg:
+                        value = query_parts[key][0]
+                        matched_key = key
+                elif key.startswith(field_key + '__') or '__' + field_key + '__' in key:
+                    value = query_parts[key][0]
+                    matched_key = key
+
+                if not value and hasattr(spec, 'lookup_kwarg_isnull') and key == spec.lookup_kwarg_isnull:
+                    value = query_parts[key][0]
+                    matched_key = key
 
             if value:
                 matches[matched_key] = value

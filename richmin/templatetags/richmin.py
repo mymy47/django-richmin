@@ -324,6 +324,17 @@ def has_richmin_setting(settings: Dict[str, Any], key: str) -> bool:
 
 
 @register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key.lower(), None)
+
+@register.filter
+def to_int(value):
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return None
+
+@register.filter
 def has_fieldsets(adminform: AdminForm) -> bool:
     """
     Do we have fieldsets

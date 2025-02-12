@@ -5,7 +5,7 @@ from typing import Any, Dict
 from django.conf import settings
 from django.templatetags.static import static
 
-from .utils import get_admin_url, get_model_meta
+from .utils import get_admin_url, get_model_meta, get_model
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +32,8 @@ DEFAULT_SETTINGS: Dict[str, Any] = {
     'copyright': '',
     # The model admin to search from the search bar, search bar omitted if excluded
     'search_model': None,
+    # The model admin to filter from the nav bar. filter omitted if excluded
+    'filter_model': None,
     # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
     'user_avatar': None,
     ############
@@ -233,6 +235,22 @@ def get_settings() -> Dict:
                 richmin_search_model['search_name'] = search_model.split('.')[-1] + 's'
             richmin_settings['search_models_parsed'].append(richmin_search_model)
 
+    if richmin_settings['filter_model']:
+        if not isinstance(richmin_settings['filter_model'], list):
+            richmin_settings['filter_model'] = [richmin_settings['filter_model']]
+
+        richmin_settings['filter_models_parsed'] = []
+        for filter_model in richmin_settings['filter_model']:
+            richmin_filter_model = {}
+            richmin_filter_model['model'] = get_model(filter_model)
+
+            model_meta = get_model_meta(filter_model)
+            if model_meta:
+                richmin_filter_model['filter_name'] = model_meta.verbose_name.title()
+            else:
+                richmin_filter_model['filter_name'] = filter_model.split('.')[-1]
+            richmin_settings['filter_models_parsed'].append(richmin_filter_model)
+
     # Deal with single strings in hide_apps/hide_models and make sure we lower case 'em
     if type(richmin_settings['hide_apps']) is str:
         richmin_settings['hide_apps'] = [richmin_settings['hide_apps']]
@@ -341,3 +359,27 @@ def get_ui_tweaks() -> Dict:
         ret['dark_mode_theme'] = {'name': dark_mode_theme, 'src': static(THEMES[dark_mode_theme])}
 
     return ret
+
+
+def get_filter_models():
+    settings = get_settings()
+    if not settings['filter_model']:
+        return {}
+
+    filter_models_dict = settings['filter_models_parsed']
+    result = {}
+    for obj in filter_models_dict:
+        result[obj['filter_name']] = obj['model'].objects.all()
+
+    return result
+
+
+def get_filter_models_keys():
+    settings = get_settings()
+    if not settings['filter_model']:
+        return []
+
+    keys = []
+    for item in settings['filter_models_parsed']:
+        keys.append(item['filter_name'].lower())
+    return keys

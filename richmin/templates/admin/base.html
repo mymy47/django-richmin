@@ -119,6 +119,27 @@
         {% endfor %}
       {% endif %}
 
+      {% if richmin_settings.filter_model %}
+        {% for model_name, queryset in filter_queryset.items %}
+            <form id="global-filter-form" method="post" action="{% url 'set_global_filter' %}"  class="form-inline ml-3">
+                {% csrf_token %}
+                <div class="input-group">
+                    <select class="form-control" name="{{ model_name|lower }}" onchange="this.form.submit();">
+                        <option value="">{{ model_name }}</option>
+                          {% for obj in queryset %}
+                            {% with selected_key_id=selected_keys|get_item:model_name %}
+                              <option value="{{ obj.id }}" {% if obj.id == selected_key_id|to_int %}selected{% endif %}>
+                                {{ obj }}
+                              </option>
+                            {% endwith %}
+                          {% endfor %}
+                    </select>
+                </div>
+            </form>
+        {% endfor %}
+      {% endif %}
+
+
       <ul class="navbar-nav ml-auto">
 
         {% if richmin_settings.show_ui_builder %}

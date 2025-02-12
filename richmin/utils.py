@@ -99,6 +99,18 @@ def get_custom_url(url: str, admin_site: str = 'admin') -> str:
     return url
 
 
+def get_model(model_str: str) -> Union[None, Options]:
+    """
+    Get model class
+    """
+    try:
+        app, model = model_str.split('.')
+        model_klass: Model = apps.get_registered_model(app, model)
+        return model_klass
+    except (ValueError, LookupError):
+        return None
+
+
 def get_model_meta(model_str: str) -> Union[None, Options]:
     """
     Get model meta class

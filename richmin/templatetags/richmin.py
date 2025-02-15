@@ -434,7 +434,7 @@ def get_selected_filters(request: HttpRequest) -> dict:
         return {}
     selected_filters = {}
     for key in filter_models_parsed.keys():
-        selected_filters[key.lower()] = request.COOKIES.get(f'richy_global_filter_{key.lower()}')
+        selected_filters[key.lower()] = request.COOKIES.get(f'richy_global_filter_{key}')
     return selected_filters
 
 

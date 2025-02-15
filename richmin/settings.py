@@ -244,12 +244,13 @@ def get_settings() -> Dict:
             parsed_filter_model = get_model(filter_model)
 
             model_meta = get_model_meta(filter_model)
+            filter_name = filter_model.split('.')[-1].lower()
             if model_meta:
-                filter_name = model_meta.verbose_name.title()
+                filter_label = model_meta.verbose_name.title()
             else:
-                filter_name = filter_model.split('.')[-1]
+                filter_label = filter_name
 
-            richmin_settings['filter_models_parsed'][filter_name] = parsed_filter_model.objects.all()
+            richmin_settings['filter_models_parsed'][filter_name] = (filter_label, parsed_filter_model.objects.all())
 
     # Deal with single strings in hide_apps/hide_models and make sure we lower case 'em
     if type(richmin_settings['hide_apps']) is str:
@@ -359,14 +360,3 @@ def get_ui_tweaks() -> Dict:
         ret['dark_mode_theme'] = {'name': dark_mode_theme, 'src': static(THEMES[dark_mode_theme])}
 
     return ret
-
-
-def get_filter_models_keys():
-    settings = get_settings()
-    if not settings['filter_model']:
-        return []
-
-    keys = []
-    for key in settings['filter_models_parsed']:
-        keys.append(key.lower())
-    return keys

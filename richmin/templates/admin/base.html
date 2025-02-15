@@ -123,12 +123,12 @@
       {% endif %}
 
       {% if richmin_settings.filter_model %}
-        {% for model_name, queryset in richmin_settings.filter_models_parsed.items %}
+        {% for model_name, label_and_queryset in richmin_settings.filter_models_parsed.items %}
           <div class="form-inline ml-3">
             <div class="input-group input-group-sm">
-              <select class="form-control search-filter global-filter-item" data-name="{{ model_name|lower }}">
-                <option value="">{{ model_name }}</option>
-                {% for obj in queryset %}
+              <select class="form-control search-filter global-filter-item" data-name="{{ model_name }}">
+                <option value="">{{ label_and_queryset.0 }}</option>
+                {% for obj in label_and_queryset.1 %}
                   {% with selected_key_id=selected_filters|get_item:model_name %}
                     <option value="{{ obj.id }}" {% if obj.id == selected_key_id|to_int %}selected{% endif %}>
                       {{ obj }}

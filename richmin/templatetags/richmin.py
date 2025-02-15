@@ -327,12 +327,14 @@ def has_richmin_setting(settings: Dict[str, Any], key: str) -> bool:
 def get_item(dictionary, key):
     return dictionary.get(key.lower(), None)
 
+
 @register.filter
 def to_int(value):
     try:
         return int(value)
     except (ValueError, TypeError):
         return None
+
 
 @register.filter
 def has_fieldsets(adminform: AdminForm) -> bool:
@@ -423,6 +425,17 @@ def sidebar_status(request: HttpRequest) -> str:
     if request.COOKIES.get('richy_menu', '') == 'closed':
         return 'sidebar-collapse'
     return ''
+
+
+@register.simple_tag
+def get_selected_filters(request: HttpRequest) -> dict:
+    filter_models_parsed = get_settings().get('filter_models_parsed')
+    if not filter_models_parsed:
+        return {}
+    selected_filters = {}
+    for key in filter_models_parsed.keys():
+        selected_filters[key.lower()] = request.COOKIES.get(f'richy_global_filter_{key.lower()}')
+    return selected_filters
 
 
 @register.filter

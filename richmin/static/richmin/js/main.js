@@ -23,6 +23,20 @@
     });
   }
 
+  function handleGlobalFilters() {
+    $('.global-filter-item').each(function () {
+      const firstValue = $(this).val()
+      $(this).change(function () {
+        const name = $(this).attr('data-name')
+        const value = $(this).val()
+        if(value !== firstValue){
+          setCookie('richy_global_filter_' + name, value);
+          // Reload the page
+          window.location.reload()
+        }
+      });
+    })
+  }
 
   function setActiveLinks() {
     /*
@@ -39,7 +53,6 @@
     } else if ($parent_link.length) {
       $parent_link.addClass('active');
     }
-    ;
 
     const $a_active = $('a.nav-link.active');
     const $main_li_parent = $a_active.closest('li.nav-item.has-treeview');
@@ -47,7 +60,7 @@
 
     $ul_child.show();
     $main_li_parent.addClass('menu-is-opening menu-open');
-  };
+  }
 
   $(document).ready(function () {
     // Set active status on links
@@ -56,6 +69,9 @@
     // When we use the menu, store its state in a cookie to preserve it
     handleMenu();
 
+    // Handle global filters
+    handleGlobalFilters();
+
     // Add minimal changelist styling to templates that we have been unable to override (e.g MPTT)
     // Needs to be here and not in change_list.js because this is the only JS we are guaranteed to run
     // (as its included in base.html)
@@ -63,7 +79,6 @@
     if ($changeListTable.length && !$changeListTable.hasClass('table table-striped')) {
       $changeListTable.addClass('table table-striped');
     }
-    ;
   });
 
 })(jQuery);

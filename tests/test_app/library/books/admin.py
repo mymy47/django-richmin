@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.html import format_html
 from django.utils.timesince import timesince
 
+from richmin.admin_mixin import GlobalFilterMixin
 from richmin.utils import attr
 from .models import Author, Book, Genre
 from ..loans.admin import BookLoanInline
@@ -17,7 +18,7 @@ class BooksInline(admin.TabularInline):
 
 
 @admin.register(Book)
-class BookAdmin(admin.ModelAdmin):
+class BookAdmin(GlobalFilterMixin, admin.ModelAdmin):
     fieldsets = (
         ('general', {
             'fields': ('title', 'author', 'library'),
@@ -44,6 +45,10 @@ class BookAdmin(admin.ModelAdmin):
 
     # Order the sections within the change form
     richmin_section_order = ('book loans', 'general', 'other')
+
+    global_filter = [
+        ('library', 'library'),
+    ]
 
 
 @admin.register(Author)

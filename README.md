@@ -8,6 +8,23 @@ Drop-in theme for django admin, that utilises AdminLTE 3 & Bootstrap 4 to make y
 pip install django-richmin
 ```
 
+## Global Filter Usage
+- First of all, add 'GlobalFilterMixin' to your admin model and put it in the first inheritance hierarchy e.g.
+  ```
+    from richmin.admin_mixin import GlobalFilterMixin
+  
+    class FooAdmin(GlobalFilterMixin, admin.ModelAdmin)
+  ```
+- Add 'global_filter' in your admin class. This field is a list of tuples.
+  The first item of the tuple is the relation between model and field and the second item
+  is the model name. Implement it like this:
+  ```
+    global_filters = [
+      ('bar', 'bar'),
+      ('bar__baz', 'baz'),
+    ]
+  ```
+
 ## Features
 - Drop-in admin skin, all configuration optional
 - Customisable side menu

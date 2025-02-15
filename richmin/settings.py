@@ -5,7 +5,7 @@ from typing import Any, Dict
 from django.conf import settings
 from django.templatetags.static import static
 
-from .utils import get_admin_url, get_model_meta, get_model
+from .utils import get_admin_url, get_model, get_model_meta
 
 logger = logging.getLogger(__name__)
 
@@ -239,17 +239,17 @@ def get_settings() -> Dict:
         if not isinstance(richmin_settings['filter_model'], list):
             richmin_settings['filter_model'] = [richmin_settings['filter_model']]
 
-        richmin_settings['filter_models_parsed'] = []
+        richmin_settings['filter_models_parsed'] = {}
         for filter_model in richmin_settings['filter_model']:
-            richmin_filter_model = {}
-            richmin_filter_model['model'] = get_model(filter_model)
+            parsed_filter_model = get_model(filter_model)
 
             model_meta = get_model_meta(filter_model)
             if model_meta:
-                richmin_filter_model['filter_name'] = model_meta.verbose_name.title()
+                filter_name = model_meta.verbose_name.title()
             else:
-                richmin_filter_model['filter_name'] = filter_model.split('.')[-1]
-            richmin_settings['filter_models_parsed'].append(richmin_filter_model)
+                filter_name = filter_model.split('.')[-1]
+
+            richmin_settings['filter_models_parsed'][filter_name] = parsed_filter_model.objects.all()
 
     # Deal with single strings in hide_apps/hide_models and make sure we lower case 'em
     if type(richmin_settings['hide_apps']) is str:
@@ -361,25 +361,12 @@ def get_ui_tweaks() -> Dict:
     return ret
 
 
-def get_filter_models():
-    settings = get_settings()
-    if not settings['filter_model']:
-        return {}
-
-    filter_models_dict = settings['filter_models_parsed']
-    result = {}
-    for obj in filter_models_dict:
-        result[obj['filter_name']] = obj['model'].objects.all()
-
-    return result
-
-
 def get_filter_models_keys():
     settings = get_settings()
     if not settings['filter_model']:
         return []
 
     keys = []
-    for item in settings['filter_models_parsed']:
-        keys.append(item['filter_name'].lower())
+    for key in settings['filter_models_parsed']:
+        keys.append(key.lower())
     return keys

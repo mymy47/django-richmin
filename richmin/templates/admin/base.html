@@ -3,6 +3,7 @@
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% get_richmin_settings request as richmin_settings %}
 {% get_richmin_ui_tweaks as richmin_ui %}
+{% get_selected_filters request as selected_filters %}
 
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
@@ -53,6 +54,8 @@
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   {% endif %}
+
+  <link rel="stylesheet" href="{% static 'vendor/select2/css/select2.min.css' %}">
 
   {% block extrastyle %} {% endblock %}
   {% block extrahead %} {% endblock %}
@@ -120,22 +123,21 @@
       {% endif %}
 
       {% if richmin_settings.filter_model %}
-        {% for model_name, queryset in filter_queryset.items %}
-            <form id="global-filter-form" method="post" action="{% url 'set_global_filter' %}"  class="form-inline ml-3">
-                {% csrf_token %}
-                <div class="input-group">
-                    <select class="form-control" name="{{ model_name|lower }}" onchange="this.form.submit();">
-                        <option value="">{{ model_name }}</option>
-                          {% for obj in queryset %}
-                            {% with selected_key_id=selected_keys|get_item:model_name %}
-                              <option value="{{ obj.id }}" {% if obj.id == selected_key_id|to_int %}selected{% endif %}>
-                                {{ obj }}
-                              </option>
-                            {% endwith %}
-                          {% endfor %}
-                    </select>
-                </div>
-            </form>
+        {% for model_name, queryset in richmin_settings.filter_models_parsed.items %}
+          <div class="form-inline ml-3">
+            <div class="input-group input-group-sm">
+              <select class="form-control search-filter global-filter-item" data-name="{{ model_name|lower }}">
+                <option value="">{{ model_name }}</option>
+                {% for obj in queryset %}
+                  {% with selected_key_id=selected_filters|get_item:model_name %}
+                    <option value="{{ obj.id }}" {% if obj.id == selected_key_id|to_int %}selected{% endif %}>
+                      {{ obj }}
+                    </option>
+                  {% endwith %}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
         {% endfor %}
       {% endif %}
 
@@ -412,6 +414,17 @@
 <script src="{% static "vendor/adminlte/js/adminlte.min.js" %}"></script>
 <!-- Django customisations -->
 <script src="{% static "richmin/js/main.js" %}"></script>
+<script type="text/javascript" src="{% static 'vendor/select2/js/select2.min.js' %}"></script>
+<script>
+  {% comment %} set filterInputLength default and custom values {% endcomment %}
+  window.filterInputLengthDefault = 0;
+  window.filterInputLength = {
+    {% for k,v in cl.model_admin.filter_input_length.items %}
+      '{{ k }}': {{ v }},
+    {% endfor %}
+  }
+</script>
+<script type="text/javascript" src="{% static 'richmin/js/change_list.js' %}"></script>
 
 {% if richmin_settings.custom_js %}
   <script src="{% static richmin_settings.custom_js %}"></script>

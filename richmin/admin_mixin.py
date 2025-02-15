@@ -4,7 +4,8 @@ class GlobalFilterMixin:
     Example:
         class MyAdmin(GlobalFilterMixin, Foo, Bar)
 
-    Each Item of the global filter must be a tuple. First item is the relation and the second item is model name.
+    Each Item of the global filter must be a tuple.
+    The First item is the relation and the second item is model name.
     Example:
         class FooAdmin(GlobalFilterMixin, admin.ModelAdmin):
             global_filter = [
@@ -20,15 +21,11 @@ class GlobalFilterMixin:
         return qs
 
     def apply_global_filter(self, request, qs):
-        if request.session.get('global_filters', {}):
-            for relation, model_name in self.global_filter:
-                relation: str
-
-                if not relation.endswith('_id'):
-                    relation = f'{relation}_id'
-
-                value = request.session.get('global_filters').get(model_name, None)
-                if not value:
-                    continue
-                qs = qs.filter(**{relation: value})
+        for relation, model_name in self.global_filter:
+            value = request.COOKIES.get(f'richy_global_filter_{model_name.lower()}')
+            if not value:
+                continue
+            if not relation.endswith('_id'):
+                relation = f'{relation}_id'
+            qs = qs.filter(**{relation: value})
         return qs

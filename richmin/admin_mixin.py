@@ -17,7 +17,8 @@ class GlobalFilterMixin:
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)  # noqa
-        qs = self.apply_global_filter(request, qs)
+        if not request.path.endswith('/change/'):  # Ignore global filter in change form page
+            qs = self.apply_global_filter(request, qs)
         return qs
 
     def apply_global_filter(self, request, qs):

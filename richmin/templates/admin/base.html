@@ -424,7 +424,10 @@
     {% endfor %}
   }
 </script>
-<script type="text/javascript" src="{% static 'richmin/js/change_list.js' %}"></script>
+
+{% block change_list_js %}
+  <script type="text/javascript" src="{% static 'richmin/js/change_list.js' %}"></script>
+{% endblock %}
 
 {% if richmin_settings.custom_js %}
   <script src="{% static richmin_settings.custom_js %}"></script>

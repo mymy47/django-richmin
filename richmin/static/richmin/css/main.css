@@ -175,7 +175,7 @@ table.dataTable thead .sorting_desc_disabled::after {
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow {
-  right: 5px !important;
+  right: 5px;
   top: unset !important;
 }
 

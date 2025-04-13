@@ -55,7 +55,7 @@ body.popup .content-wrapper {
   float: right;
 }
 
-.select2-container--admin-autocomplete[dir="rtl"] .select2-selection--multiple .select2-selection__choice {
+.select2-container--default[dir="rtl"] .select2-selection--multiple .select2-selection__choice {
   margin-left: 0 !important;
   margin-right: 4px !important;
 }

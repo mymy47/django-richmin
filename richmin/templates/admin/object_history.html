@@ -30,7 +30,18 @@
 
               <div class="timeline">
 
-                {% for action in action_list reversed %}
+                <div class="clock-item">
+                  <i class="fas fa-clock bg-gray"></i>
+                  {% if not action_list %}
+                    <div class="timeline-item">
+                      <h3 class="timeline-header no-border">
+                        {% trans "This object doesn't have a change history. It probably wasn't added via this admin site." %}
+                      </h3>
+                    </div>
+                  {% endif %}
+                </div>
+
+                {% for action in action_list %}
                   <div class="time-label">
                     <span class="bg-info">{{ action.action_time|date:"DATETIME_FORMAT" }}</span>
                   </div>
@@ -54,19 +65,27 @@
 
                 {% endfor %}
 
-                <div>
-                  <i class="fas fa-clock bg-gray"></i>
-                  {% if not action_list %}
-                    <div class="timeline-item">
-                      <h3 class="timeline-header no-border">
-                        {% trans "This object doesn't have a change history. It probably wasn't added via this admin site." %}
-                      </h3>
-                    </div>
-                  {% endif %}
-                </div>
               </div>
 
             </div>
+
+
+            {% if pagination_required %}
+              <div>
+                <ul class="pagination pagination-sm m-0 float-right">
+                  {% for i in page_range %}
+                    {% richmin_page_paginator_number action_list i %}
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+
+            {% if action_list.paginator.count %}
+              <p class="paginator">
+                {{ action_list.paginator.count }} {% blocktranslate count counter=action_list.paginator.count %}entry{% plural %}entries{% endblocktranslate %}
+              </p>
+            {% endif %}
+
           </div>
         </div>
       </div>

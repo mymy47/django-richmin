@@ -15,6 +15,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.context_processors import PermWrapper
 from django.contrib.auth.models import AbstractUser
 from django.core.handlers.wsgi import WSGIRequest
+from django.core.paginator import Page
 from django.db.models.base import ModelBase
 from django.http import HttpRequest
 from django.template import Context, Library
@@ -238,6 +239,63 @@ def richmin_paginator_number(change_list: ChangeList, i: int) -> SafeText:
 
     if end:
         link = change_list.get_query_string({PAGE_VAR: change_list.page_num + 1}) if change_list.page_num < i else '#'
+        html_str += """
+        <li class="page-item next {disabled}">
+            <a class="page-link" href="{link}" data-dt-idx="7" tabindex="0">»</a>
+        </li>
+        """.format(
+            link=link, disabled='disabled' if link == '#' else ''
+        )
+
+    return format_html(html_str)
+
+
+@register.simple_tag
+def richmin_page_paginator_number(page: Page, i: int) -> SafeText:
+    """
+    Generate an individual page index link in a paginated list.
+    """
+    html_str = ''
+    start = i == 1
+    end = i == page.paginator.num_pages
+    spacer = i in ('.', '…')
+    current_page = i == page.number
+
+    if start:
+        link = f'?{PAGE_VAR}={page.number - 1}' if page.number > 1 else '#'
+        html_str += """
+        <li class="page-item previous {disabled}">
+            <a class="page-link" href="{link}" data-dt-idx="0" tabindex="0">«</a>
+        </li>
+        """.format(
+            link=link, disabled='disabled' if link == '#' else ''
+        )
+
+    if current_page:
+        html_str += """
+        <li class="page-item active">
+            <a class="page-link" href="javascript:void(0);" data-dt-idx="3" tabindex="0">{num}</a>
+        </li>
+        """.format(num=i)
+    elif spacer:
+        html_str += """
+        <li class="page-item">
+            <a class="page-link" href="javascript:void(0);" data-dt-idx="3" tabindex="0">… </a>
+        </li>
+        """
+    else:
+        link = f'?{PAGE_VAR}={i}'
+        end = 'end' if end else ''
+        html_str += """
+            <li class="page-item">
+            <a href="{link}" class="page-link {end}" data-dt-idx="3" tabindex="0">{num}</a>
+            </li>
+        """.format(
+            num=i, link=link, end=end
+        )
+
+    if end:
+        link = f'?{PAGE_VAR}={page.number + 1}' if page.number < i else '#'
         html_str += """
         <li class="page-item next {disabled}">
             <a class="page-link" href="{link}" data-dt-idx="7" tabindex="0">»</a>

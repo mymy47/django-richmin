@@ -4,7 +4,14 @@ from django.contrib.auth.models import Group, User
 from django.core.management import BaseCommand
 
 from ...models import Author, Book, Genre
-from ....factories import AuthorFactory, BookFactory, BookLoanFactory, GroupFactory, LibraryFactory, UserFactory
+from ....factories import (
+    AuthorFactory,
+    BookFactory,
+    BookLoanFactory,
+    GroupFactory,
+    LibraryFactory,
+    UserFactory,
+)
 from ....loans.models import BookLoan, Library
 
 
@@ -21,7 +28,7 @@ class Command(BaseCommand):
         UserFactory(
             username='test@test.com',
             email='test@test.com',
-            password='test',
+            password='test',  # noqa
             is_superuser=True,
         )
 

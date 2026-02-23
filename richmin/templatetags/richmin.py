@@ -3,7 +3,8 @@ import itertools
 import json
 import logging
 import urllib.parse
-from typing import Any, Callable, Dict, List, Optional, Union
+from collections.abc import Callable
+from typing import Any
 
 from django.conf import settings
 from django.contrib.admin import ListFilter
@@ -29,7 +30,13 @@ from django.utils.translation import gettext
 
 from .. import version
 from ..settings import CHANGEFORM_TEMPLATES, get_settings, get_ui_tweaks
-from ..utils import get_admin_url, get_filter_id, has_fieldsets_check, make_menu, order_with_respect_to
+from ..utils import (
+    get_admin_url,
+    get_filter_id,
+    has_fieldsets_check,
+    make_menu,
+    order_with_respect_to,
+)
 
 User = get_user_model()
 register = Library()
@@ -37,7 +44,7 @@ logger = logging.getLogger(__name__)
 
 
 @register.simple_tag(takes_context=True)
-def get_side_menu(context: Context, using: str = 'available_apps') -> List[Dict]:
+def get_side_menu(context: Context, using: str = 'available_apps') -> list[dict]:
     """
     Get the list of apps and models to render out in the side menu and on the dashboard page
 
@@ -82,7 +89,7 @@ def get_side_menu(context: Context, using: str = 'available_apps') -> List[Dict]
         custom_link_names = [x.get('name', '').lower() for x in app_custom_links]
         model_ordering = list(
             filter(
-                lambda x: x.lower().startswith('{}.'.format(app_label)) or x.lower() in custom_link_names,
+                lambda x: x.lower().startswith(f'{app_label}.') or x.lower() in custom_link_names,
                 ordering,
             )
         )
@@ -92,8 +99,7 @@ def get_side_menu(context: Context, using: str = 'available_apps') -> List[Dict]
                 menu_items = order_with_respect_to(
                     menu_items,
                     model_ordering,
-                    getter=lambda x: x.get('model_str',
-                                           x.get('name', '').lower()),
+                    getter=lambda x: x.get('model_str', x.get('name', '').lower()),
                 )
             app['models'] = menu_items
             menu.append(app)
@@ -106,25 +112,37 @@ def get_side_menu(context: Context, using: str = 'available_apps') -> List[Dict]
 
 
 @register.simple_tag
-def get_top_menu(user: AbstractUser, admin_site: str = 'admin') -> List[Dict]:
+def get_top_menu(user: AbstractUser, admin_site: str = 'admin') -> list[dict]:
     """
     Produce the menu for the top nav bar
     """
     options = get_settings()
-    return make_menu(user, options.get('topmenu_links', []), options, allow_appmenus=True, admin_site=admin_site)
+    return make_menu(
+        user,
+        options.get('topmenu_links', []),
+        options,
+        allow_appmenus=True,
+        admin_site=admin_site,
+    )
 
 
 @register.simple_tag
-def get_user_menu(user: AbstractUser, admin_site: str = 'admin') -> List[Dict]:
+def get_user_menu(user: AbstractUser, admin_site: str = 'admin') -> list[dict]:
     """
     Produce the menu for the user dropdown
     """
     options = get_settings()
-    return make_menu(user, options.get('usermenu_links', []), options, allow_appmenus=False, admin_site=admin_site)
+    return make_menu(
+        user,
+        options.get('usermenu_links', []),
+        options,
+        allow_appmenus=False,
+        admin_site=admin_site,
+    )
 
 
 @register.simple_tag
-def get_richmin_settings(request: WSGIRequest) -> Dict:
+def get_richmin_settings(request: WSGIRequest) -> dict:
     """
     Get richmin settings, update any defaults from the request, and return
     """
@@ -144,7 +162,7 @@ def get_richmin_settings(request: WSGIRequest) -> Dict:
 
 
 @register.simple_tag
-def get_richmin_ui_tweaks() -> Dict:
+def get_richmin_ui_tweaks() -> dict:
     """
     Return richmin ui tweaks
     """
@@ -170,7 +188,7 @@ def get_user_avatar(user: AbstractUser) -> str:
     """
     no_avatar = static('vendor/adminlte/img/user2-160x160.jpg')
     options = get_settings()
-    avatar_field_name: Optional[Union[str, Callable]] = options.get('user_avatar')
+    avatar_field_name: str | Callable | None = options.get('user_avatar')
 
     if not avatar_field_name:
         return no_avatar
@@ -183,9 +201,9 @@ def get_user_avatar(user: AbstractUser) -> str:
     if avatar_field:
         if type(avatar_field) is str:
             return avatar_field
-        elif hasattr(avatar_field, 'url'):
+        if hasattr(avatar_field, 'url'):
             return avatar_field.url
-        elif callable(avatar_field):
+        if callable(avatar_field):
             return avatar_field()
 
     logger.warning('avatar field must be an ImageField/URLField on the user model, or a callable')
@@ -210,16 +228,14 @@ def richmin_paginator_number(change_list: ChangeList, i: int) -> SafeText:
         <li class="page-item previous {disabled}">
             <a class="page-link" href="{link}" data-dt-idx="0" tabindex="0">«</a>
         </li>
-        """.format(
-            link=link, disabled='disabled' if link == '#' else ''
-        )
+        """.format(link=link, disabled='disabled' if link == '#' else '')
 
     if current_page:
-        html_str += """
+        html_str += f"""
         <li class="page-item active">
-            <a class="page-link" href="javascript:void(0);" data-dt-idx="3" tabindex="0">{num}</a>
+            <a class="page-link" href="javascript:void(0);" data-dt-idx="3" tabindex="0">{i}</a>
         </li>
-        """.format(num=i)
+        """
     elif spacer:
         html_str += """
         <li class="page-item">
@@ -229,13 +245,11 @@ def richmin_paginator_number(change_list: ChangeList, i: int) -> SafeText:
     else:
         query_string = change_list.get_query_string({PAGE_VAR: i})
         end = 'end' if end else ''
-        html_str += """
+        html_str += f"""
             <li class="page-item">
-            <a href="{query_string}" class="page-link {end}" data-dt-idx="3" tabindex="0">{num}</a>
+            <a href="{query_string}" class="page-link {end}" data-dt-idx="3" tabindex="0">{i}</a>
             </li>
-        """.format(
-            num=i, query_string=query_string, end=end
-        )
+        """
 
     if end:
         link = change_list.get_query_string({PAGE_VAR: change_list.page_num + 1}) if change_list.page_num < i else '#'
@@ -243,9 +257,7 @@ def richmin_paginator_number(change_list: ChangeList, i: int) -> SafeText:
         <li class="page-item next {disabled}">
             <a class="page-link" href="{link}" data-dt-idx="7" tabindex="0">»</a>
         </li>
-        """.format(
-            link=link, disabled='disabled' if link == '#' else ''
-        )
+        """.format(link=link, disabled='disabled' if link == '#' else '')
 
     return format_html(html_str)
 
@@ -267,16 +279,14 @@ def richmin_page_paginator_number(page: Page, i: int) -> SafeText:
         <li class="page-item previous {disabled}">
             <a class="page-link" href="{link}" data-dt-idx="0" tabindex="0">«</a>
         </li>
-        """.format(
-            link=link, disabled='disabled' if link == '#' else ''
-        )
+        """.format(link=link, disabled='disabled' if link == '#' else '')
 
     if current_page:
-        html_str += """
+        html_str += f"""
         <li class="page-item active">
-            <a class="page-link" href="javascript:void(0);" data-dt-idx="3" tabindex="0">{num}</a>
+            <a class="page-link" href="javascript:void(0);" data-dt-idx="3" tabindex="0">{i}</a>
         </li>
-        """.format(num=i)
+        """
     elif spacer:
         html_str += """
         <li class="page-item">
@@ -286,13 +296,11 @@ def richmin_page_paginator_number(page: Page, i: int) -> SafeText:
     else:
         link = f'?{PAGE_VAR}={i}'
         end = 'end' if end else ''
-        html_str += """
+        html_str += f"""
             <li class="page-item">
-            <a href="{link}" class="page-link {end}" data-dt-idx="3" tabindex="0">{num}</a>
+            <a href="{link}" class="page-link {end}" data-dt-idx="3" tabindex="0">{i}</a>
             </li>
-        """.format(
-            num=i, link=link, end=end
-        )
+        """
 
     if end:
         link = f'?{PAGE_VAR}={page.number + 1}' if page.number < i else '#'
@@ -300,15 +308,13 @@ def richmin_page_paginator_number(page: Page, i: int) -> SafeText:
         <li class="page-item next {disabled}">
             <a class="page-link" href="{link}" data-dt-idx="7" tabindex="0">»</a>
         </li>
-        """.format(
-            link=link, disabled='disabled' if link == '#' else ''
-        )
+        """.format(link=link, disabled='disabled' if link == '#' else '')
 
     return format_html(html_str)
 
 
 @register.simple_tag
-def admin_extra_filters(cl: ChangeList) -> Dict:
+def admin_extra_filters(cl: ChangeList) -> dict:
     """
     Return the dict of used filters which is not included in list_filters form
     """
@@ -337,7 +343,7 @@ def richmin_list_filter(cl: ChangeList, spec: ListFilter) -> SafeText:
         value = ''
         matches = {}
         query_parts = urllib.parse.parse_qs(qs[1:])
-        for key in query_parts.keys():
+        for key in query_parts:
             if key == field_key:
                 value = query_parts[key][0]
                 matched_key = key
@@ -358,18 +364,16 @@ def richmin_list_filter(cl: ChangeList, spec: ListFilter) -> SafeText:
                 matches[matched_key] = value
 
         # Iterate matches, use original as actual values, additional for hidden
-        i = 0
-        for key, value in matches.items():
+        for i, (key, value) in enumerate(matches.items()):
             if i == 0:
                 choice['name'] = key
                 choice['value'] = value
-            i += 1
 
     return tpl.render({'field_name': field_key, 'title': spec.title, 'choices': choices, 'spec': spec})
 
 
 @register.simple_tag
-def richy_admin_url(value: Union[str, ModelBase], admin_site: str = 'admin') -> str:
+def richy_admin_url(value: str | ModelBase, admin_site: str = 'admin') -> str:
     """
     Get the admin url for a given object
     """
@@ -377,7 +381,7 @@ def richy_admin_url(value: Union[str, ModelBase], admin_site: str = 'admin') -> 
 
 
 @register.filter
-def has_richmin_setting(settings: Dict[str, Any], key: str) -> bool:
+def has_richmin_setting(settings: dict[str, Any], key: str) -> bool:
     return key in settings and settings[key] is not None
 
 
@@ -403,8 +407,9 @@ def has_fieldsets(adminform: AdminForm) -> bool:
 
 
 @register.simple_tag
-def get_sections(admin_form: AdminForm,
-                 inline_admin_formsets: List[InlineAdminFormSet]) -> List[Union[Fieldset, InlineAdminFormSet]]:
+def get_sections(
+    admin_form: AdminForm, inline_admin_formsets: list[InlineAdminFormSet]
+) -> list[Fieldset | InlineAdminFormSet]:
     """
     Get and sort all the sections that need rendering out in a change form
     """
@@ -418,7 +423,9 @@ def get_sections(admin_form: AdminForm,
 
     if hasattr(admin_form.model_admin, 'richmin_section_order'):
         fieldsets = order_with_respect_to(
-            fieldsets, admin_form.model_admin.richmin_section_order, getter=lambda x: x.name
+            fieldsets,
+            admin_form.model_admin.richmin_section_order,
+            getter=lambda x: x.name,
         )
 
     return fieldsets
@@ -441,7 +448,7 @@ def debug(value: Any) -> Any:
 
 
 @register.filter
-def as_json(value: Union[List, Dict]) -> str:
+def as_json(value: list | dict) -> str:
     """
     Take the given item and dump it out as JSON
     """
@@ -459,7 +466,7 @@ def get_changeform_template(adminform: AdminForm) -> str:
     inlines = adminform.model_admin.inlines
     has_inlines = inlines and len(inlines) > 0
     model = adminform.model_admin.model
-    model_name = '{}.{}'.format(model._meta.app_label, model._meta.model_name).lower()
+    model_name = f'{model._meta.app_label}.{model._meta.model_name}'.lower()
 
     changeform_format = options.get('changeform_format', '')
     if model_name in options.get('changeform_format_overrides', {}):
@@ -468,7 +475,7 @@ def get_changeform_template(adminform: AdminForm) -> str:
     if not has_fieldsets and not has_inlines:
         return CHANGEFORM_TEMPLATES['single']
 
-    if not changeform_format or changeform_format not in CHANGEFORM_TEMPLATES.keys():
+    if not changeform_format or changeform_format not in CHANGEFORM_TEMPLATES:
         return CHANGEFORM_TEMPLATES['horizontal_tabs']
 
     return CHANGEFORM_TEMPLATES[changeform_format]
@@ -491,7 +498,7 @@ def get_selected_filters(request: HttpRequest) -> dict:
     if not filter_models_parsed:
         return {}
     selected_filters = {}
-    for key in filter_models_parsed.keys():
+    for key in filter_models_parsed:
         selected_filters[key.lower()] = request.COOKIES.get(f'richy_global_filter_{key}')
     return selected_filters
 
@@ -501,12 +508,12 @@ def can_view_self(perms: PermWrapper) -> bool:
     """
     Determines whether a user has sufficient permissions to view its own profile
     """
-    view_perm = 'view_{}'.format(User._meta.model_name)
+    view_perm = f'view_{User._meta.model_name}'
     return perms[User._meta.app_label][view_perm]
 
 
 @register.simple_tag
-def header_class(header: Dict, forloop: Dict) -> str:
+def header_class(header: dict, forloop: dict) -> str:
     """
     Adds CSS classes to header HTML element depending on its attributes
     """
@@ -546,27 +553,27 @@ def app_is_installed(app: str) -> bool:
 
 
 @register.simple_tag
-def action_message_to_list(action: LogEntry) -> List[Dict]:
+def action_message_to_list(action: LogEntry) -> list[dict]:
     """
     Retrieves a formatted list with all actions taken by a user given a log entry object
     """
     messages = []
 
-    def added(x: str) -> Dict:
+    def added(x: str) -> dict:
         return {
             'msg': x,
             'icon': 'plus-circle',
             'colour': 'success',
         }
 
-    def changed(x: str) -> Dict:
+    def changed(x: str) -> dict:
         return {
             'msg': x,
             'icon': 'edit',
             'colour': 'blue',
         }
 
-    def deleted(x: str) -> Dict:
+    def deleted(x: str) -> dict:
         return {
             'msg': x,
             'icon': 'trash',
@@ -606,7 +613,7 @@ def action_message_to_list(action: LogEntry) -> List[Dict]:
 
 
 @register.filter
-def style_bold_first_word(message: str) -> Union[SafeText, str]:
+def style_bold_first_word(message: str) -> SafeText | str:
     """
     Wraps first word in a message with <strong> HTML element
     """
@@ -615,11 +622,11 @@ def style_bold_first_word(message: str) -> Union[SafeText, str]:
     if not len(message_words):
         return ''
 
-    message_words[0] = '<strong>{}</strong>'.format(message_words[0])
+    message_words[0] = f'<strong>{message_words[0]}</strong>'
 
     message = ' '.join(list(message_words))
 
-    return mark_safe(message)  # nosec
+    return mark_safe(message)  # noqa
 
 
 @register.filter

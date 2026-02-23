@@ -71,8 +71,11 @@ def templates():
         for template in [os.path.join(dp, f) for dp, dn, filenames in os.walk(richmin_dir) for f in filenames]:
             original = template.replace(richmin_dir, django_dir)
             if os.path.isfile(original):
-                result = subprocess.run(['diff', '-u', '-w', '--suppress-common-lines', original, template],
-                                        stdout=subprocess.PIPE)  # nosec
+                result = subprocess.run(  # noqa
+                    ['diff', '-u', '-w', '--suppress-common-lines', original, template],
+                    stdout=subprocess.PIPE,
+                    check=False,
+                )
                 out_file = template.replace(richmin_dir, diffs) + '.patch'
                 os.makedirs(os.path.dirname(out_file), exist_ok=True)
 

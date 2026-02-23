@@ -1,4 +1,4 @@
-Django>4,<5
+Django>4,<6
 whitenoise
 gunicorn
 psycopg2-binary

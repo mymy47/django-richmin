@@ -4,8 +4,14 @@ import pytest
 from django.db.models.functions import Upper
 from django.urls import reverse
 
-from richmin.utils import get_admin_url, get_app_admin_urls, get_custom_url, get_model_meta, get_view_permissions, \
-    order_with_respect_to
+from richmin.utils import (
+    get_admin_url,
+    get_app_admin_urls,
+    get_custom_url,
+    get_model_meta,
+    get_view_permissions,
+    order_with_respect_to,
+)
 from .test_app.library.books.models import Book
 from .test_app.library.factories import BookFactory, UserFactory
 
@@ -39,9 +45,7 @@ def test_get_admin_url(admin_user):
     """
     book = BookFactory()
 
-    assert get_admin_url(book) == reverse(
-        'admin:books_book_change', args=(book.pk,)
-    )
+    assert get_admin_url(book) == reverse('admin:books_book_change', args=(book.pk,))
     assert get_admin_url(Book) == reverse('admin:books_book_changelist')
     assert get_admin_url(Book, q='test') == reverse('admin:books_book_changelist') + '?q=test'
     assert get_admin_url('books.Book') == reverse('admin:books_book_changelist')
@@ -79,21 +83,9 @@ def test_get_app_admin_urls():
     We can get all the admin urls for an app
     """
     assert get_app_admin_urls('books') == [
-        {
-            'url': '/en/admin/books/genre/',
-            'model': 'books.genre',
-            'name': 'Genres'
-        },
-        {
-            'url': '/en/admin/books/book/',
-            'model': 'books.book',
-            'name': 'Books'
-        },
-        {
-            'url': '/en/admin/books/author/',
-            'model': 'books.author',
-            'name': 'Authors'
-        },
+        {'url': '/en/admin/books/genre/', 'model': 'books.genre', 'name': 'Genres'},
+        {'url': '/en/admin/books/book/', 'model': 'books.book', 'name': 'Books'},
+        {'url': '/en/admin/books/author/', 'model': 'books.author', 'name': 'Authors'},
     ]
 
     assert get_app_admin_urls('nothing') == []

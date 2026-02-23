@@ -66,12 +66,14 @@ def test_permissions_on_custom_links(client, custom_richmin_settings):
     url = reverse('admin:index')
 
     custom_richmin_settings['custom_links'] = {
-        'books': [{
-            'name': 'Make Messages',
-            'url': 'make_messages',
-            'icon': 'fa-comments',
-            'permissions': ['books.view_book'],
-        }]
+        'books': [
+            {
+                'name': 'Make Messages',
+                'url': 'make_messages',
+                'icon': 'fa-comments',
+                'permissions': ['books.view_book'],
+            }
+        ]
     }
 
     client.force_login(user)
@@ -94,55 +96,32 @@ def test_top_menu(admin_client, custom_richmin_settings):
     url = reverse('admin:index')
 
     custom_richmin_settings['topmenu_links'] = [
-        {
-            'name': 'Home',
-            'url': 'admin:index',
-            'permissions': ['auth.view_user']
-        },
+        {'name': 'Home', 'url': 'admin:index', 'permissions': ['auth.view_user']},
         {
             'name': 'Support',
             'url': 'https://github.com/mymy47/django-richmin',
             'new_window': True,
         },
-        {
-            'model': 'auth.User'
-        },
-        {
-            'app': 'books'
-        },
+        {'model': 'auth.User'},
+        {'app': 'books'},
     ]
 
     response = admin_client.get(url)
 
     assert parse_topmenu(response) == [
-        {
-            'name': 'Home',
-            'link': '/en/admin/'
-        },
+        {'name': 'Home', 'link': '/en/admin/'},
         {
             'name': 'Support',
             'link': 'https://github.com/mymy47/django-richmin',
         },
-        {
-            'name': 'Users',
-            'link': '/en/admin/auth/user/'
-        },
+        {'name': 'Users', 'link': '/en/admin/auth/user/'},
         {
             'name': 'Books',
             'link': '#',
             'children': [
-                {
-                    'name': 'Genres',
-                    'link': '/en/admin/books/genre/'
-                },
-                {
-                    'name': 'Books',
-                    'link': '/en/admin/books/book/'
-                },
-                {
-                    'name': 'Authors',
-                    'link': '/en/admin/books/author/'
-                },
+                {'name': 'Genres', 'link': '/en/admin/books/genre/'},
+                {'name': 'Books', 'link': '/en/admin/books/book/'},
+                {'name': 'Authors', 'link': '/en/admin/books/author/'},
             ],
         },
     ]
@@ -156,47 +135,29 @@ def test_user_menu(admin_user, client, custom_richmin_settings):
     url = reverse('admin:index')
 
     custom_richmin_settings['usermenu_links'] = [
-        {
-            'name': 'Home',
-            'url': 'admin:index',
-            'permissions': ['auth.view_user']
-        },
+        {'name': 'Home', 'url': 'admin:index', 'permissions': ['auth.view_user']},
         {
             'name': 'Support',
             'url': 'https://github.com/mymy47/django-richmin',
             'new_window': True,
         },
-        {
-            'model': 'auth.User'
-        },
+        {'model': 'auth.User'},
     ]
 
     client.force_login(admin_user)
     response = client.get(url)
 
     assert parse_usermenu(response) == [
-        {
-            'link': '/en/admin/password_change/',
-            'name': 'Change password'
-        },
-        {
-            'link': '/en/admin/logout/',
-            'name': 'Log out'
-        },
-        {
-            'link': '/en/admin/',
-            'name': 'Home'
-        },
+        {'link': '/en/admin/password_change/', 'name': 'Change password'},
+        {'link': '/en/admin/logout/', 'name': 'Log out'},
+        {'link': '/en/admin/', 'name': 'Home'},
         {
             'link': 'https://github.com/mymy47/django-richmin',
             'name': 'Support',
         },
+        {'link': '/en/admin/auth/user/', 'name': 'Users'},
         {
-            'link': '/en/admin/auth/user/',
-            'name': 'Users'
-        },
-        {
-            'link': '/en/admin/auth/user/{}/change/'.format(admin_user.pk),
+            'link': f'/en/admin/auth/user/{admin_user.pk}/change/',
             'name': 'See Profile',
         },
     ]

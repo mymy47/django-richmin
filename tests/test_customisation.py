@@ -44,9 +44,7 @@ def test_changeform_templates(config_value, template, admin_client, custom_richm
     """
     custom_richmin_settings['changeform_format'] = config_value
     book = BookFactory()
-    url = reverse(
-        'admin:books_book_change', args=(book.pk,)
-    )
+    url = reverse('admin:books_book_change', args=(book.pk,))
 
     response = admin_client.get(url)
     templates_used = [t.name for t in response.templates]
@@ -59,22 +57,18 @@ def test_changeform_template_override(admin_client, custom_richmin_settings):
     """
     We can set a global template, and override it per model
     """
-    custom_richmin_settings.update({
-        'changeform_format': 'vertical_tabs',
-        'changeform_format_overrides': {
-            'books.book': 'carousel'
+    custom_richmin_settings.update(
+        {
+            'changeform_format': 'vertical_tabs',
+            'changeform_format_overrides': {'books.book': 'carousel'},
         }
-    })
+    )
 
     user = UserFactory()
     book = BookFactory()
 
-    books_url = reverse(
-        'admin:books_book_change', args=(book.pk,)
-    )
-    users_url = reverse(
-        'admin:auth_user_change', args=(user.pk,)
-    )
+    books_url = reverse('admin:books_book_change', args=(book.pk,))
+    users_url = reverse('admin:auth_user_change', args=(user.pk,))
 
     response = admin_client.get(books_url)
     templates_used = [t.name for t in response.templates]
@@ -95,9 +89,7 @@ def test_changeform_template_default(admin_client, custom_richmin_settings):
     assert custom_richmin_settings['changeform_format'] == 'horizontal_tabs'
     book = BookFactory()
 
-    books_url = reverse(
-        'admin:books_book_change', args=(book.pk,)
-    )
+    books_url = reverse('admin:books_book_change', args=(book.pk,))
 
     response = admin_client.get(books_url)
     templates_used = [t.name for t in response.templates]
@@ -111,9 +103,7 @@ def test_changeform_single(admin_client, monkeypatch):
     The single template is used when the modeladmin has no fieldsets, or inlines
     """
     book = BookFactory()
-    books_url = reverse(
-        'admin:books_book_change', args=(book.pk,)
-    )
+    books_url = reverse('admin:books_book_change', args=(book.pk,))
     monkeypatch.setattr(BookAdmin, 'fieldsets', None)
     monkeypatch.setattr(BookAdmin, 'inlines', [])
 

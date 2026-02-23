@@ -1,5 +1,6 @@
 import logging
-from typing import Any, Callable, Dict, List, Set, Union
+from collections.abc import Callable
+from typing import Any
 from urllib.parse import urlencode
 
 from django.apps import apps
@@ -14,7 +15,7 @@ from django.utils.translation import gettext
 logger = logging.getLogger(__name__)
 
 
-def order_with_respect_to(original: List, reference: List, getter: Callable = lambda x: x) -> List:
+def order_with_respect_to(original: list, reference: list, getter: Callable = lambda x: x) -> list:
     """
     Order a list based on the location of items in the reference list, optionally, use a getter to pull values out of
     the first list
@@ -29,7 +30,7 @@ def order_with_respect_to(original: List, reference: List, getter: Callable = la
 
         ranking.append(pos)
 
-    return [y for x, y in sorted(zip(ranking, original), key=lambda x: x[0])]
+    return [y for x, y in sorted(zip(ranking, original, strict=False), key=lambda x: x[0])]
 
 
 def get_admin_url(instance: Any, admin_site: str = 'admin', from_app: bool = False, **kwargs: str) -> str:
@@ -39,12 +40,11 @@ def get_admin_url(instance: Any, admin_site: str = 'admin', from_app: bool = Fal
     url = '#'
 
     try:
-
         if type(instance) is str:
             app_label, model_name = instance.split('.')
             model_name = model_name.lower()
             url = reverse(
-                'admin:{app_label}_{model_name}_changelist'.format(app_label=app_label, model_name=model_name),
+                f'admin:{app_label}_{model_name}_changelist',
                 current_app=admin_site,
             )
 
@@ -52,7 +52,7 @@ def get_admin_url(instance: Any, admin_site: str = 'admin', from_app: bool = Fal
         elif instance.__class__ == ModelBase:
             app_label, model_name = instance._meta.app_label, instance._meta.model_name
             url = reverse(
-                'admin:{app_label}_{model_name}_changelist'.format(app_label=app_label, model_name=model_name),
+                f'admin:{app_label}_{model_name}_changelist',
                 current_app=admin_site,
             )
 
@@ -60,7 +60,7 @@ def get_admin_url(instance: Any, admin_site: str = 'admin', from_app: bool = Fal
         elif instance.__class__.__class__ == ModelBase and isinstance(instance, instance.__class__):
             app_label, model_name = instance._meta.app_label, instance._meta.model_name
             url = reverse(
-                'admin:{app_label}_{model_name}_change'.format(app_label=app_label, model_name=model_name),
+                f'admin:{app_label}_{model_name}_change',
                 args=(instance.pk,),
                 current_app=admin_site,
             )
@@ -71,7 +71,7 @@ def get_admin_url(instance: Any, admin_site: str = 'admin', from_app: bool = Fal
             logger.warning(gettext('Could not reverse url from {instance}'.format(instance=instance)))
 
     if kwargs:
-        url += '?{params}'.format(params=urlencode(kwargs))
+        url += f'?{urlencode(kwargs)}'
 
     return url
 
@@ -93,13 +93,13 @@ def get_custom_url(url: str, admin_site: str = 'admin') -> str:
     try:
         url = reverse(url.lower(), current_app=admin_site)
     except NoReverseMatch:
-        logger.warning('Couldnt reverse {url}'.format(url=url))
+        logger.warning(f'Couldnt reverse {url}')
         url = '#' + url
 
     return url
 
 
-def get_model(model_str: str) -> Union[None, Options]:
+def get_model(model_str: str) -> None | Options:
     """
     Get model class
     """
@@ -111,7 +111,7 @@ def get_model(model_str: str) -> Union[None, Options]:
         return None
 
 
-def get_model_meta(model_str: str) -> Union[None, Options]:
+def get_model_meta(model_str: str) -> None | Options:
     """
     Get model meta class
     """
@@ -123,12 +123,12 @@ def get_model_meta(model_str: str) -> Union[None, Options]:
         return None
 
 
-def get_app_admin_urls(app: str, admin_site: str = 'admin') -> List[Dict]:
+def get_app_admin_urls(app: str, admin_site: str = 'admin') -> list[dict]:
     """
     For the given app string, get links to all the app models admin views
     """
     if app not in apps.app_configs:
-        logger.warning('{app} not found when generating links'.format(app=app))
+        logger.warning(f'{app} not found when generating links')
         return []
 
     models = []
@@ -139,16 +139,18 @@ def get_app_admin_urls(app: str, admin_site: str = 'admin') -> List[Dict]:
         if url == '#':
             continue
 
-        models.append({
-            'url': url,
-            'model': '{app}.{model}'.format(app=model._meta.app_label, model=model._meta.model_name),
-            'name': model._meta.verbose_name_plural.title(),
-        })
+        models.append(
+            {
+                'url': url,
+                'model': f'{model._meta.app_label}.{model._meta.model_name}',
+                'name': model._meta.verbose_name_plural.title(),
+            }
+        )
 
     return models
 
 
-def get_view_permissions(user: AbstractUser) -> Set[str]:
+def get_view_permissions(user: AbstractUser) -> set[str]:
     """
     Get model names based on a users view/change permissions
     """
@@ -157,17 +159,17 @@ def get_view_permissions(user: AbstractUser) -> Set[str]:
     lower_perms = []
     for perm in perms:
         app, perm_codename = perm.split('.')
-        lower_perms.append('{app}.{perm_codename}'.format(app=app, perm_codename=perm_codename.lower()))
+        lower_perms.append(f'{app}.{perm_codename.lower()}')
     return {x.replace('view_', '') for x in lower_perms if 'view' in x or 'change' in x}
 
 
 def make_menu(
     user: AbstractUser,
-    links: List[Dict],
-    options: Dict,
+    links: list[dict],
+    options: dict,
     allow_appmenus: bool = True,
-    admin_site: str = 'admin'
-) -> List[Dict]:
+    admin_site: str = 'admin',
+) -> list[dict]:
     """
     Make a menu from a list of user supplied links
     """
@@ -178,7 +180,6 @@ def make_menu(
 
     menu = []
     for link in links:
-
         perm_matches = []
         for perm in link.get('permissions', []):
             perm_matches.append(user.has_perm(perm))
@@ -188,13 +189,15 @@ def make_menu(
 
         # Url links
         if 'url' in link:
-            menu.append({
-                'name': link.get('name', 'unspecified'),
-                'url': get_custom_url(link['url'], admin_site=admin_site),
-                'children': None,
-                'new_window': link.get('new_window', False),
-                'icon': link.get('icon', options['default_icon_children']),
-            })
+            menu.append(
+                {
+                    'name': link.get('name', 'unspecified'),
+                    'url': get_custom_url(link['url'], admin_site=admin_site),
+                    'children': None,
+                    'new_window': link.get('new_window', False),
+                    'icon': link.get('icon', options['default_icon_children']),
+                }
+            )
 
         # Model links
         elif 'model' in link:
@@ -204,40 +207,46 @@ def make_menu(
             _meta = get_model_meta(link['model'])
 
             name = _meta.verbose_name_plural.title() if _meta else link['model']
-            menu.append({
-                'name': name,
-                'url': get_admin_url(link['model'], admin_site=admin_site),
-                'children': [],
-                'new_window': link.get('new_window', False),
-                'icon': options['icons'].get(link['model'], options['default_icon_children']),
-            })
+            menu.append(
+                {
+                    'name': name,
+                    'url': get_admin_url(link['model'], admin_site=admin_site),
+                    'children': [],
+                    'new_window': link.get('new_window', False),
+                    'icon': options['icons'].get(link['model'], options['default_icon_children']),
+                }
+            )
 
         # App links
         elif 'app' in link and allow_appmenus:
             app_admin_urls = get_app_admin_urls(link['app'], admin_site=admin_site)
-            children = [{
-                'name': child.get('verbose_name', child['name']),
-                'url': child['url'],
-                'children': None
-            } for child in app_admin_urls if child['model'] in model_permissions]
+            children = [
+                {
+                    'name': child.get('verbose_name', child['name']),
+                    'url': child['url'],
+                    'children': None,
+                }
+                for child in app_admin_urls
+                if child['model'] in model_permissions
+            ]
             if len(children) == 0:
                 continue
 
-            menu.append({
-                'name': getattr(apps.app_configs[link['app']], 'verbose_name', link['app']).title(),
-                'url': '#',
-                'children': children,
-                'icon': options['icons'].get(link['app'], options['default_icon_children']),
-            })
+            menu.append(
+                {
+                    'name': getattr(apps.app_configs[link['app']], 'verbose_name', link['app']).title(),
+                    'url': '#',
+                    'children': children,
+                    'icon': options['icons'].get(link['app'], options['default_icon_children']),
+                }
+            )
 
     return menu
 
 
 def has_fieldsets_check(adminform: AdminForm) -> bool:
     fieldsets = adminform.fieldsets
-    if not fieldsets or (len(fieldsets) == 1 and fieldsets[0][0] is None):
-        return False
-    return True
+    return not (not fieldsets or len(fieldsets) == 1 and fieldsets[0][0] is None)
 
 
 def attr(**kwargs) -> Callable:

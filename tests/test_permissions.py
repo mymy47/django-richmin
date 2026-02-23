@@ -13,12 +13,8 @@ def test_no_delete_permission(client):
     user = UserFactory(permissions=['books.view_book'])
     book = BookFactory()
 
-    url = reverse(
-        'admin:books_book_change', args=(book.pk,)
-    )
-    delete_url = reverse(
-        'admin:books_book_delete', args=(book.pk,)
-    )
+    url = reverse('admin:books_book_change', args=(book.pk,))
+    delete_url = reverse('admin:books_book_delete', args=(book.pk,))
     client.force_login(user)
 
     response = client.get(url)

@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from django.conf.global_settings import LANGUAGES as DJANGO_LANGUAGES
 
@@ -9,7 +9,7 @@ from django.conf.global_settings import LANGUAGES as DJANGO_LANGUAGES
 ###################
 BASE_DIR = Path(__file__).resolve().parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'not-secret-at-all')
-DEBUG = bool(int(os.getenv('DEBUG', 1)))
+DEBUG = bool(int(os.getenv('DEBUG', 1)))  # noqa
 TEST = os.getenv('FAIL_INVALID_TEMPLATE_VARS')
 
 PREFIX = '' if os.getenv('STANDALONE') else ''
@@ -27,8 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Our apps
-    '{}library.books.apps.BooksConfig'.format(PREFIX),
-    '{}library.loans.apps.LoansConfig'.format(PREFIX),
+    f'{PREFIX}library.books.apps.BooksConfig',
+    f'{PREFIX}library.loans.apps.LoansConfig',
 ]
 
 MIDDLEWARE = [
@@ -43,39 +43,32 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = '{}library.urls'.format(PREFIX)
+ROOT_URLCONF = f'{PREFIX}library.urls'
 
-WSGI_APPLICATION = '{}library.wsgi.application'.format(PREFIX)
+WSGI_APPLICATION = f'{PREFIX}library.wsgi.application'
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler'
-        }
-    },
-    'loggers': {
-        '': {
-            'handlers': ['console'],
-            'level': 'INFO'
-        }
-    },
+    'handlers': {'console': {'class': 'logging.StreamHandler'}},
+    'loggers': {'': {'handlers': ['console'], 'level': 'INFO'}},
 }
 
-TEMPLATES = [{
-    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [],
-    'APP_DIRS': True,
-    'OPTIONS': {
-        'context_processors': [
-            'django.template.context_processors.debug',
-            'django.template.context_processors.request',
-            'django.contrib.auth.context_processors.auth',
-            'django.contrib.messages.context_processors.messages',
-        ],
-    },
-}]
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    }
+]
 
 DATABASES = {
     'default': {
@@ -85,18 +78,10 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 LANGUAGE_CODE = 'en'
@@ -131,7 +116,7 @@ if not DEBUG and not TEST:
 ########################
 # Third party settings #
 ########################
-RICHMIN_SETTINGS: Dict[str, Any] = {
+RICHMIN_SETTINGS: dict[str, Any] = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
     'site_title': 'Library Admin',
     # Title on the brand, and login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
@@ -161,28 +146,18 @@ RICHMIN_SETTINGS: Dict[str, Any] = {
     # Links to put along the top menu
     'topmenu_links': [
         # Url that gets reversed (Permissions can be added)
-        {
-            'name': 'Home',
-            'url': 'admin:index',
-            'permissions': ['auth.view_user']
-        },
+        {'name': 'Home', 'url': 'admin:index', 'permissions': ['auth.view_user']},
         # external url that opens in a new window (Permissions can be added)
         {
             'name': 'Support',
             'url': 'https://github.com/mymy47/django-richmin',
-            'new_window': True
+            'new_window': True,
         },
         # model admin to link to (Permissions checked against model)
-        {
-            'model': 'auth.User'
-        },
+        {'model': 'auth.User'},
         # App with dropdown menu to all its models pages (Permissions checked against models)
-        {
-            'app': 'books'
-        },
-        {
-            'app': 'loans'
-        },
+        {'app': 'books'},
+        {'app': 'loans'},
     ],
     #############
     # User Menu #
@@ -192,11 +167,9 @@ RICHMIN_SETTINGS: Dict[str, Any] = {
         {
             'name': 'Support',
             'url': 'https://github.com/mymy47/django-richmin',
-            'new_window': True
+            'new_window': True,
         },
-        {
-            'model': 'auth.user'
-        },
+        {'model': 'auth.user'},
     ],
     #############
     # Side Menu #
@@ -210,7 +183,14 @@ RICHMIN_SETTINGS: Dict[str, Any] = {
     # Hide these models when generating side menu (e.g auth.user)
     'hide_models': [],
     # List of apps to base side menu (app or model) ordering off of
-    'order_with_respect_to': ['Make Messages', 'auth', 'books', 'books.author', 'books.book', 'loans'],
+    'order_with_respect_to': [
+        'Make Messages',
+        'auth',
+        'books',
+        'books.author',
+        'books.book',
+        'loans',
+    ],
     # Custom links to append to app groups, keyed on app name
     'custom_links': {
         'loans': [
@@ -223,14 +203,15 @@ RICHMIN_SETTINGS: Dict[str, Any] = {
             {
                 'name': 'Custom View',
                 'url': 'admin:custom_view',
-                'icon': 'fas fa-box-open'
+                'icon': 'fas fa-box-open',
             },
         ]
     },
     'filter_model': 'loans.Library',
     # Custom icons for side menu apps/models See the link below
-    # https://fontawesome.com/icons?d=gallery&m=free&v=5.0.0,5.0.1,5.0.10,5.0.11,5.0.12,5.0.13,5.0.2,5.0.3,5.0.4,5.0.5,5.0.6,5.0.7,5.0.8,5.0.9,5.1.0,
-    # 5.1.1,5.2.0,5.3.0,5.3.1,5.4.0,5.4.1,5.4.2,5.13.0,5.12.0,5.11.2,5.11.1,5.10.0,5.9.0,5.8.2,5.8.1,5.7.2,5.7.1,5.7.0,5.6.3,5.5.0,5.4.2
+    # https://fontawesome.com/icons?d=gallery&m=free&v=5.0.0,5.0.1,5.0.10,5.0.11,5.0.12,5.0.13,5.0.2,5.0.3,5.0.4,5.0.5,
+    # 5.0.6,5.0.7,5.0.8,5.0.9,5.1.0,5.1.1,5.2.0,5.3.0,5.3.1,5.4.0,5.4.1,5.4.2,5.13.0,5.12.0,5.11.2,5.11.1,5.10.0,5.9.0,
+    # 5.8.2,5.8.1,5.7.2,5.7.1,5.7.0,5.6.3,5.5.0,5.4.2
     # for the full list of 5.13.0 free icon classes
     'icons': {
         'auth': 'fas fa-users-cog',
@@ -272,7 +253,7 @@ RICHMIN_SETTINGS: Dict[str, Any] = {
     # override change forms on a per modeladmin basis
     'changeform_format_overrides': {
         'auth.user': 'collapsible',
-        'auth.group': 'vertical_tabs'
+        'auth.group': 'vertical_tabs',
     },
     # Add a language dropdown into the admin
     'language_chooser': True,

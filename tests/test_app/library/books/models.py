@@ -17,24 +17,18 @@ class Book(models.Model):
     isbn = models.CharField(
         'ISBN',
         max_length=13,
-        help_text=(
-            '13 Character '
-            '<a href="https://www.isbn-international.org/content/what-isbn">'
-            'ISBN number</a>',
-        ),
+        help_text=('13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>',),
     )
     genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
     published_on = models.DateField()
     last_print = models.DateField(auto_now_add=True)
     pages = models.IntegerField(null=True)
 
-    def get_absolute_url(self):
-        return reverse(
-            'admin:books_book_change', args=(self.id,)
-        )
-
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('admin:books_book_change', args=(self.id,))
 
 
 class Author(models.Model):
@@ -46,10 +40,8 @@ class Author(models.Model):
     class Meta:
         ordering = ('last_name', 'first_name')
 
-    def get_absolute_url(self):
-        return reverse(
-            'admin:books_author_change', args=(self.id,)
-        )
-
     def __str__(self):
-        return '{}, {}'.format(self.first_name, self.last_name)
+        return f'{self.first_name}, {self.last_name}'
+
+    def get_absolute_url(self):
+        return reverse('admin:books_author_change', args=(self.id,))

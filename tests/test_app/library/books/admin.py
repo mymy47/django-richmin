@@ -20,13 +20,14 @@ class BooksInline(admin.TabularInline):
 @admin.register(Book)
 class BookAdmin(GlobalFilterMixin, admin.ModelAdmin):
     fieldsets = (
-        ('general', {
-            'fields': ('title', 'author', 'library'),
-            'description': 'General book fields'
-        }),
-        ('other', {
-            'fields': ('genre', 'summary', 'isbn', 'published_on', 'pages')
-        }),
+        (
+            'general',
+            {
+                'fields': ('title', 'author', 'library'),
+                'description': 'General book fields',
+            },
+        ),
+        ('other', {'fields': ('genre', 'summary', 'isbn', 'published_on', 'pages')}),
     )
     raw_id_fields = ('author',)
     list_display = ('__str__', 'title', 'author', 'pages')
@@ -69,20 +70,17 @@ class LogEntryAdmin(admin.ModelAdmin):
 
     def object(self, obj):
         url = obj.get_admin_url()
-        return format_html(
-            '<a href="{url}">{obj} [{model}]</a>'.format(url=url, obj=obj.object_repr, model=obj.content_type.model)
-        )
+        return format_html(f'<a href="{url}">{obj.object_repr} [{obj.content_type.model}]</a>')
 
     @attr(admin_order_field='action_time')
     def modified(self, obj):
         if not obj.action_time:
             return 'Never'
-        return '{} ago'.format(timesince(obj.action_time))
+        return f'{timesince(obj.action_time)} ago'
 
 
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
-
     def get_queryset(self, request):
         """
         Remove our test user from the admin, so it cant be messed with

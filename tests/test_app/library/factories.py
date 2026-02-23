@@ -55,12 +55,11 @@ class UserFactory(DjangoModelFactory):
 
         if extracted:
             available_permissions = [
-                '{}.{}'.format(x[0], x[1])
-                for x in Permission.objects.values_list('content_type__app_label', 'codename')
+                f'{x[0]}.{x[1]}' for x in Permission.objects.values_list('content_type__app_label', 'codename')
             ]
 
             for permission in extracted:
-                assert permission in available_permissions, '{} not in {}'.format(permission, available_permissions)
+                assert permission in available_permissions, f'{permission} not in {available_permissions}'
 
                 app, perm = permission.split('.')
                 perm_obj = Permission.objects.get(content_type__app_label=app, codename=perm)

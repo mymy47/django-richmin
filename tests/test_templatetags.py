@@ -27,40 +27,26 @@ def test_action_message_to_list(admin_user):
     We can generate a list of messages from a log entry object
     """
     message = [
-        {
-            'changed': {
-                'fields': ['Owner', 'Text', 'Pub date', 'Active']
-            }
-        },
-        {
-            'added': {
-                'name': 'choice',
-                'object': 'More random choices'
-            }
-        },
-        {
-            'deleted': {
-                'name': 'choice',
-                'object': 'Person serious choose tea'
-            }
-        },
+        {'changed': {'fields': ['Owner', 'Text', 'Pub date', 'Active']}},
+        {'added': {'name': 'choice', 'object': 'More random choices'}},
+        {'deleted': {'name': 'choice', 'object': 'Person serious choose tea'}},
     ]
     log_entry = LogEntry.objects.create(user=admin_user, action_flag=CHANGE, change_message=json.dumps(message))
     assert richmin.action_message_to_list(log_entry) == [
         {
             'msg': 'Changed Owner, Text, Pub date and Active.',
             'icon': 'edit',
-            'colour': 'blue'
+            'colour': 'blue',
         },
         {
             'msg': 'Added choice “More random choices”.',
             'icon': 'plus-circle',
-            'colour': 'success'
+            'colour': 'success',
         },
         {
             'msg': 'Deleted “Person serious choose tea”.',
             'icon': 'trash',
-            'colour': 'danger'
+            'colour': 'danger',
         },
     ]
 

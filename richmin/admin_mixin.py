@@ -13,6 +13,7 @@ class GlobalFilterMixin:
                 ('project', 'project'),
             ]
     """
+
     global_filter = []
 
     def get_queryset(self, request):
@@ -27,6 +28,6 @@ class GlobalFilterMixin:
             if not value:
                 continue
             if not relation.endswith('_id'):
-                relation = f'{relation}_id'
+                relation = f'{relation}_id'  # noqa
             qs = qs.filter(**{relation: value})
         return qs

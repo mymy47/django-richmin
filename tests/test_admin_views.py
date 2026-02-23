@@ -2,8 +2,8 @@ import re
 
 import django
 import pytest
-
 from richmin.compat import reverse
+
 from .test_app.library.books.models import Book
 from .test_app.library.factories import BookFactory
 
@@ -26,10 +26,7 @@ def test_login(client, admin_user):
 
     response = client.post(
         url + '?next=/admin/',
-        data={
-            'username': admin_user.username,
-            'password': 'password'
-        },
+        data={'username': admin_user.username, 'password': 'password'},
         follow=True,
     )
 
@@ -108,7 +105,7 @@ def test_reset_password(client, admin_user):
         data={
             'username': admin_user.username,
             'new_password1': 'new_password',
-            'new_password2': 'new_password'
+            'new_password2': 'new_password',
         },
         follow=True,
     )
@@ -139,17 +136,16 @@ def test_password_change(admin_client):
         'django/forms/widgets/password.html',
         'django/forms/widgets/input.html',
         'django/forms/widgets/attrs.html',
-        'django/forms/widgets/password.html',
-        'django/forms/widgets/input.html',
-        'django/forms/widgets/attrs.html',
-        'django/forms/widgets/password.html',
-        'django/forms/widgets/input.html',
-        'django/forms/widgets/attrs.html',
         'richmin/includes/ui_builder_panel.html',
     }
 
     if django.VERSION[0] == 4:
-        expected_templates_used.update({'django/forms/errors/list/default.html', 'django/forms/errors/list/ul.html'})
+        expected_templates_used.update(
+            {
+                'django/forms/errors/list/default.html',
+                'django/forms/errors/list/ul.html',
+            }
+        )
 
     assert response.status_code == 200
     assert set(templates_used) == expected_templates_used
@@ -159,7 +155,7 @@ def test_password_change(admin_client):
         data={
             'old_password': 'password',
             'new_password1': 'PickleRick123!!',
-            'new_password2': 'PickleRick123!!'
+            'new_password2': 'PickleRick123!!',
         },
         follow=True,
     )
@@ -199,9 +195,7 @@ def test_detail(admin_client):
     We can render the detail view
     """
     book = BookFactory()
-    url = reverse(
-        'admin:books_book_change', args=(book.pk,)
-    )
+    url = reverse('admin:books_book_change', args=(book.pk,))
 
     response = admin_client.get(url)
     templates_used = [t.name for t in response.templates]
@@ -236,11 +230,13 @@ def test_detail(admin_client):
     }
 
     if django.VERSION[0] == 4:
-        expected_render_counts.update({
-            'django/forms/div.html': 1,
-            'django/forms/errors/list/default.html': 2,
-            'django/forms/errors/list/ul.html': 56,
-        })
+        expected_render_counts.update(
+            {
+                'django/forms/div.html': 1,
+                'django/forms/errors/list/default.html': 2,
+                'django/forms/errors/list/ul.html': 56,
+            }
+        )
 
     # The number of times each template was rendered
     assert render_counts == expected_render_counts
@@ -272,11 +268,13 @@ def test_detail(admin_client):
     }
 
     if django.VERSION[0] == 4:
-        expected_templates_used.update({
-            'django/forms/div.html',
-            'django/forms/errors/list/default.html',
-            'django/forms/errors/list/ul.html',
-        })
+        expected_templates_used.update(
+            {
+                'django/forms/div.html',
+                'django/forms/errors/list/default.html',
+                'django/forms/errors/list/ul.html',
+            }
+        )
 
     # The templates that were used
     assert set(templates_used) == expected_templates_used
@@ -320,11 +318,13 @@ def test_list(admin_client):
     }
 
     if django.VERSION[0] == 4:
-        expected_render_counts.update({
-            'django/forms/div.html': 1,
-            'django/forms/errors/list/default.html': 6,
-            'django/forms/errors/list/ul.html': 6,
-        })
+        expected_render_counts.update(
+            {
+                'django/forms/div.html': 1,
+                'django/forms/errors/list/default.html': 6,
+                'django/forms/errors/list/ul.html': 6,
+            }
+        )
 
     # The number of times each template was rendered
     assert render_counts == expected_render_counts
@@ -350,11 +350,13 @@ def test_list(admin_client):
     }
 
     if django.VERSION[0] == 4:
-        expected_templates.update({
-            'django/forms/div.html',
-            'django/forms/errors/list/default.html',
-            'django/forms/errors/list/ul.html',
-        })
+        expected_templates.update(
+            {
+                'django/forms/div.html',
+                'django/forms/errors/list/default.html',
+                'django/forms/errors/list/ul.html',
+            }
+        )
 
     # The templates that were used
     assert set(templates_used) == expected_templates
@@ -366,9 +368,7 @@ def test_history(admin_client):
     We can render the object history page
     """
     book = BookFactory()
-    url = reverse(
-        'admin:books_book_history', args=(book.pk,)
-    )
+    url = reverse('admin:books_book_history', args=(book.pk,))
 
     response = admin_client.get(url)
     templates_used = [t.name for t in response.templates]
@@ -399,9 +399,7 @@ def test_delete(admin_client):
     We can load the confirm delete page, and POST it, and it deletes our object
     """
     book = BookFactory()
-    url = reverse(
-        'admin:books_book_delete', args=(book.pk,)
-    )
+    url = reverse('admin:books_book_delete', args=(book.pk,))
 
     response = admin_client.get(url)
     templates_used = [t.name for t in response.templates]

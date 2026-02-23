@@ -1,6 +1,6 @@
 import copy
 import logging
-from typing import Any, Dict
+from typing import Any
 
 from django.conf import settings
 from django.templatetags.static import static
@@ -9,7 +9,7 @@ from .utils import get_admin_url, get_model, get_model_meta
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_SETTINGS: Dict[str, Any] = {
+DEFAULT_SETTINGS: dict[str, Any] = {
     # title of the window (Will default to current_admin_site.site_title)
     'site_title': None,
     # Title on the login screen (19 chars max) (will default to current_admin_site.site_header)
@@ -62,13 +62,14 @@ DEFAULT_SETTINGS: Dict[str, Any] = {
     # Custom links to append to side menu app groups, keyed on app name
     'custom_links': {},
     # Custom icons for side menu apps/models See the link below
-    # https://fontawesome.com/icons?d=gallery&m=free&v=5.0.0,5.0.1,5.0.10,5.0.11,5.0.12,5.0.13,5.0.2,5.0.3,5.0.4,5.0.5,5.0.6,5.0.7,5.0.8,5.0.9,5.1.0,
-    # 5.1.1,5.2.0,5.3.0,5.3.1,5.4.0,5.4.1,5.4.2,5.13.0,5.12.0,5.11.2,5.11.1,5.10.0,5.9.0,5.8.2,5.8.1,5.7.2,5.7.1,5.7.0,5.6.3,5.5.0,5.4.2
+    # https://fontawesome.com/icons?d=gallery&m=free&v=5.0.0,5.0.1,5.0.10,5.0.11,5.0.12,5.0.13,5.0.2,5.0.3,5.0.4,
+    # 5.0.5,5.0.6,5.0.7,5.0.8,5.0.9,5.1.0,5.1.1,5.2.0,5.3.0,5.3.1,5.4.0,5.4.1,5.4.2,5.13.0,5.12.0,5.11.2,5.11.1,
+    # 5.10.0,5.9.0,5.8.2,5.8.1,5.7.2,5.7.1,5.7.0,5.6.3,5.5.0,5.4.2
     # for the full list of 5.13.0 free icon classes
     'icons': {
         'auth': 'fas fa-users-cog',
         'auth.user': 'fas fa-user',
-        'auth.Group': 'fas fa-users'
+        'auth.Group': 'fas fa-users',
     },
     # Icons that are used when one is not manually specified
     'default_icon_parents': 'fas fa-chevron-circle-right',
@@ -111,7 +112,7 @@ DEFAULT_SETTINGS: Dict[str, Any] = {
 # Use the UI builder to generate this #
 #######################################
 
-DEFAULT_UI_TWEAKS: Dict[str, Any] = {
+DEFAULT_UI_TWEAKS: dict[str, Any] = {
     # Small text on the top navbar
     'navbar_small_text': False,
     # Small text on the footer
@@ -161,9 +162,9 @@ DEFAULT_UI_TWEAKS: Dict[str, Any] = {
         'info': 'btn-info',
         'warning': 'btn-warning',
         'danger': 'btn-danger',
-        'success': 'btn-success'
+        'success': 'btn-success',
     },
-    'actions_sticky_top': True
+    'actions_sticky_top': True,
 }
 
 THEMES = {
@@ -212,10 +213,10 @@ def get_search_model_string(search_model: str) -> str:
     """
 
     app, model_name = search_model.split('.')
-    return '{app}.{model_name}'.format(app=app, model_name=model_name.lower())
+    return f'{app}.{model_name.lower()}'
 
 
-def get_settings() -> Dict:
+def get_settings() -> dict:
     richmin_settings = copy.deepcopy(DEFAULT_SETTINGS)
     user_settings = {x: y for x, y in getattr(settings, 'RICHMIN_SETTINGS', {}).items() if y is not None}
     richmin_settings.update(user_settings)
@@ -247,12 +248,12 @@ def get_settings() -> Dict:
 
             model_meta = get_model_meta(filter_model)
             filter_name = filter_model.split('.')[-1].lower()
-            if model_meta:
-                filter_label = model_meta.verbose_name.title()
-            else:
-                filter_label = filter_name
+            filter_label = model_meta.verbose_name.title() if model_meta else filter_name
 
-            richmin_settings['filter_models_parsed'][filter_name] = (filter_label, parsed_filter_model.objects.all())
+            richmin_settings['filter_models_parsed'][filter_name] = (
+                filter_label,
+                parsed_filter_model.objects.all(),
+            )
 
     # Deal with single strings in hide_apps/hide_models and make sure we lower case 'em
     if type(richmin_settings['hide_apps']) is str:
@@ -277,14 +278,13 @@ def get_settings() -> Dict:
 
     # ensure all model names are lower cased
     richmin_settings['changeform_format_overrides'] = {
-        x.lower(): y.lower()
-        for x, y in richmin_settings.get('changeform_format_overrides', {}).items()
+        x.lower(): y.lower() for x, y in richmin_settings.get('changeform_format_overrides', {}).items()
     }
 
     return richmin_settings
 
 
-def get_ui_tweaks() -> Dict:
+def get_ui_tweaks() -> dict:
     raw_tweaks = copy.deepcopy(DEFAULT_UI_TWEAKS)
     raw_tweaks.update(getattr(settings, 'RICHMIN_UI_TWEAKS', {}))
     tweaks = {x: y for x, y in raw_tweaks.items() if y not in (None, '', False)}
@@ -322,29 +322,32 @@ def get_ui_tweaks() -> Dict:
 
     theme = tweaks['theme']
     if theme not in THEMES:
-        logger.warning('{} not found in {}, using default'.format(theme, THEMES.keys()))
+        logger.warning(f'{theme} not found in {THEMES.keys()}, using default')
         theme = 'default'
 
-    dark_mode_theme = tweaks.get('dark_mode_theme', None)
+    dark_mode_theme = tweaks.get('dark_mode_theme')
     if dark_mode_theme and dark_mode_theme not in DARK_THEMES:
-        logger.warning('{} is not a dark theme, using darkly'.format(dark_mode_theme))
+        logger.warning(f'{dark_mode_theme} is not a dark theme, using darkly')
         dark_mode_theme = 'darkly'
 
-    theme_body_classes = ' theme-{}'.format(theme)
+    theme_body_classes = f' theme-{theme}'
     if theme in DARK_THEMES:
         theme_body_classes += ' dark-mode'
 
     ret = {
         'raw': raw_tweaks,
-        'theme': {
-            'name': theme,
-            'src': static(THEMES[theme])
-        },
+        'theme': {'name': theme, 'src': static(THEMES[theme])},
         'sidebar_classes': classes('sidebar', 'sidebar_disable_expand'),
         'navbar_classes': classes('navbar', 'no_navbar_border', 'navbar_small_text'),
         'body_classes': classes(
-            'accent', 'body_small_text', 'navbar_fixed', 'footer_fixed', 'sidebar_fixed', 'layout_boxed'
-        ) + theme_body_classes,
+            'accent',
+            'body_small_text',
+            'navbar_fixed',
+            'footer_fixed',
+            'sidebar_fixed',
+            'layout_boxed',
+        )
+        + theme_body_classes,
         'actions_classes': classes('actions_sticky_top'),
         'sidebar_list_classes': classes(
             'sidebar_nav_small_text',
@@ -359,6 +362,9 @@ def get_ui_tweaks() -> Dict:
     }
 
     if dark_mode_theme:
-        ret['dark_mode_theme'] = {'name': dark_mode_theme, 'src': static(THEMES[dark_mode_theme])}
+        ret['dark_mode_theme'] = {
+            'name': dark_mode_theme,
+            'src': static(THEMES[dark_mode_theme]),
+        }
 
     return ret

@@ -28,12 +28,8 @@ class BookLoanAdmin(admin.ModelAdmin):
     search_fields = ('book__title',)
     readonly_fields = ('id',)
     fieldsets = (
-        (None, {
-            'fields': ('book', 'imprint', 'id')
-        }),
-        ('Availability', {
-            'fields': ('status', 'due_back', 'duration', 'borrower')
-        }),
+        (None, {'fields': ('book', 'imprint', 'id')}),
+        ('Availability', {'fields': ('status', 'due_back', 'duration', 'borrower')}),
     )
 
     def get_urls(self):

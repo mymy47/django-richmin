@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages]
+find = { namespaces = false }
+
+[tool.setuptools_scm]
+version_file = "__tmp_version.py"
+
+[tool.pip-tools]
+generate-hashes = false
+verbose = true
+no-emit-index-url = true
+no-emit-trusted-host = true
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+
+exclude = [
+  ".eggs",
+  ".git",
+  ".venv",
+  "build",
+  "dist",
+  "migrations",
+]
+
+format = { quote-style = "single" }
+
+[tool.ruff.lint]
+select = [
+  "I", # isort
+  "S", # bandit
+  "F", # Pyflakes
+  "E", # pycodestyle
+  "B", # flake8-bugbear
+  "UP", # pyupgrade
+  "SIM", # flake8-simplify
+  "FA", # flake8-future-annotations
+  "RSE", # flake8-raise
+  "RET", # flake8-return
+  "FLY", # flynt
+  "DJ", # flake8-django
+  "C90", # mccabe
+  "PIE", # flake8-pie
+  "PLW", # pylint warnings
+  "PLE", # pylint errors
+]
+
+ignore = [
+  "F405", # X may be undefined, or defined from star imports Y
+  "B904", # Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+  "RET502", # Do not implicitly return None in function able to return non-None value
+  "RET503", # Missing explicit return at the end of function able to return non-None value
+  "RET504", # Unnecessary assignment to {name} before return statement
+  "C901", # Too complex code
+  "S101", # Use of assert
+  "S311", # Standard pseudo-random
+  "S607", # Starting a process with a partial executable path
+]
+
+flake8-bandit = { }
+pyupgrade = { }
+
+[tool.ruff.lint.isort]
+case-sensitive = true
+combine-as-imports = true
+no-lines-before = ["local-folder"]
+relative-imports-order = "closest-to-furthest"

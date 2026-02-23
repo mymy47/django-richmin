@@ -147,6 +147,20 @@
         updateRelatedObjectLinks(this);
       }
     });
+
+    if (window.enableCtrlSSave) {
+      const $submitBtn = $('input[type=submit][name=_save]').first()
+      if ($submitBtn.length) {
+        $(document).on('keydown', function (event) {
+          // Check if Ctrl+S is pressed then prevent default browser behavior and submit the form
+          if (event.ctrlKey && event.keyCode === 83) {
+            event.preventDefault();
+            $submitBtn.trigger('click');
+          }
+        });
+      }
+    }
+
   });
 
   // Apply select2 to all select boxes when new inline row is created

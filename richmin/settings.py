@@ -102,6 +102,8 @@ DEFAULT_SETTINGS: Dict[str, Any] = {
     'changeform_format_overrides': {},
     # Add a language dropdown into the admin
     'language_chooser': True,
+    # Use ctrl+s for saving change forms
+    'enable_ctrl_s_save': True,
 }
 
 #######################################

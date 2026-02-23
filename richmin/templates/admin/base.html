@@ -424,6 +424,7 @@
       '{{ k }}': {{ v }},
     {% endfor %}
   }
+  window.enableCtrlSSave = {{ richmin_settings.enable_ctrl_s_save|yesno:'true,false' }};
 </script>
 
 {% block change_list_js %}

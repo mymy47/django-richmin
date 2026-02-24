@@ -990,12 +990,13 @@ textarea {
 }
 
 :root {
-  --primary-fg: #fff;
+  --primary-fg: #333;
 
   --body-fg: #333;
   --body-bg: #fff;
-  --body-quiet-color: #666;
+  --body-quiet-color: #00000020;
   --body-loud-color: #000;
+  --secondary: #fff;
 
   --header-color: #ffc;
   --header-branding-color: var(--accent);
@@ -1079,4 +1080,17 @@ ul.errorlist {
 
 .timeline .clock-item {
   margin-bottom: 55px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  color: var(--body-fg);
+  background-color: var(--body-bg);
 }

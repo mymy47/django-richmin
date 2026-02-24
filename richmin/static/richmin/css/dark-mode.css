@@ -1,0 +1,225 @@
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #264b5d;
+    --primary-bg: #343a40;
+    --primary-fg: #f7f7f7;
+
+    --nav-bg: #3f474e;
+    --nav-border: #56606a;
+
+    --body-fg: #eeeeee;
+    --body-bg: #1e2225;
+    --body-quiet-color: #d0d0d0;
+    --body-medium-color: #e0e0e0;
+    --body-loud-color: #ffffff;
+    --secondary: #121212;
+
+    --breadcrumbs-link-fg: #e0e0e0;
+    --breadcrumbs-bg: var(--primary);
+
+    --link-fg: #81d4fa;
+    --link-hover-color: #4ac1f7;
+    --link-selected-fg: #6f94c6;
+
+    --hairline-color: #272727;
+    --border-color: #353535;
+
+    --error-fg: #e35f5f;
+    --message-success-bg: #006b1b;
+    --message-warning-bg: #583305;
+    --message-error-bg: #570808;
+
+    --darkened-bg: #212121;
+    --selected-bg: #1b1b1b;
+    --selected-row: #00363a;
+
+    --close-button-bg: #333333;
+    --close-button-hover-bg: #666666;
+
+    color-scheme: dark;
+  }
+}
+
+
+html[data-theme="dark"] {
+  --primary: #264b5d;
+  --primary-bg: #343a40;
+  --primary-fg: #f7f7f7;
+
+  --nav-bg: #3f474e;
+  --nav-border: #56606a;
+
+  --body-fg: #eeeeee;
+  --body-bg: #1e2225;
+  --body-quiet-color: #d0d0d0;
+  --body-medium-color: #e0e0e0;
+  --body-loud-color: #ffffff;
+
+  --breadcrumbs-link-fg: #e0e0e0;
+  --breadcrumbs-bg: var(--primary);
+
+  --link-fg: #81d4fa;
+  --link-hover-color: #4ac1f7;
+  --link-selected-fg: #6f94c6;
+
+  --hairline-color: #272727;
+  --border-color: #353535;
+
+  --error-fg: #e35f5f;
+  --message-success-bg: #006b1b;
+  --message-warning-bg: #583305;
+  --message-error-bg: #570808;
+
+  --darkened-bg: #212121;
+  --selected-bg: #1b1b1b;
+  --selected-row: #00363a;
+
+  --close-button-bg: #333333;
+  --close-button-hover-bg: #666666;
+
+  color-scheme: dark;
+}
+
+.form-control:focus {
+  color: var(--primary-fg);
+  background-color: var(--body-bg);
+  border-color: var(--primary-fg);
+}
+
+.card {
+  background-color: var(--body-bg);
+  box-shadow: 0 0 1px var(--body-quiet-color), 0 1px 3px rgba(0, 0, 0, .2);
+}
+
+[data-theme=dark] .card-header {
+  border-bottom: 1px solid rgba(224, 224, 224, 0.12);
+}
+
+[data-theme=dark] .select2-container--default .select2-selection--single {
+  background-color: var(--body-bg);
+  color: var(--primary-fg);
+}
+
+[data-theme=dark] .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--primary-fg);
+}
+
+[data-theme=dark] .vLargeTextField {
+  background-color: var(--body-bg);
+  color: var(--primary-fg);
+  border: 1px solid var(--border-color) !important;
+}
+
+[data-theme=dark] .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  background-color: var(--body-bg);
+  color: var(--primary-fg);
+}
+
+
+[data-theme=dark] .select2-results__option {
+  color: var(--primary-fg);
+}
+
+[data-theme=dark] .select2-container .select2-selection--single {
+  border: 1px solid var(--border-color) !important;
+}
+
+.timeline > div > .timeline-item, .related-widget-wrapper select, [data-theme=dark] select,
+[data-theme=dark] .select2-dropdown, .selector .selector-filter,
+[data-theme=dark] .select2-container--default .select2-selection--multiple {
+  background-color: var(--body-bg);
+  color: var(--primary-fg);
+}
+
+[data-theme=dark] body, [data-theme=dark] .navbar, [data-theme=dark] .content-wrapper, [data-theme=dark] .main-footer {
+  background-color: var(--primary-bg) !important;
+}
+
+[data-theme=dark] .navbar .btn-navbar, [data-theme=dark] .navbar .form-control-navbar {
+  background-color: var(--nav-bg);
+  border: 1px solid var(--nav-border);
+  color: var(--body-loud-color);
+}
+
+[data-theme=dark] .navbar .form-control-navbar + .input-group-append > .btn-navbar,
+[data-theme=dark] .navbar .form-control-navbar + .input-group-prepend > .btn-navbar {
+  background-color: var(--nav-bg);
+  color: var(--body-loud-color);
+  border: 1px solid var(--nav-border);
+  border-left: none;
+}
+
+[data-theme=dark] .btn-outline-primary {
+  color: var(--primary-fg);
+  border-color: var(--body-bg);
+}
+
+[data-theme=dark] .btn-outline-primary:hover {
+  color: var(--body-loud-color);
+  background-color: var(--body-bg);
+  border-color: var(--body-bg);
+}
+
+/* THEME SWITCH */
+.theme-toggle {
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  background: transparent;
+  vertical-align: middle;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  margin-top: 1px;
+}
+
+.theme-toggle:hover {
+  opacity: 1;
+}
+
+.theme-toggle svg {
+  vertical-align: middle;
+  height: 1.3rem;
+  width: 1.3rem;
+  display: none;
+}
+
+/*
+Fully hide screen reader text so we only show the one matching the current
+theme.
+*/
+.theme-toggle .visually-hidden {
+  display: none;
+}
+
+html[data-theme="auto"] .theme-toggle .theme-label-when-auto {
+  display: block;
+}
+
+html[data-theme="dark"] .theme-toggle .theme-label-when-dark {
+  display: block;
+}
+
+html[data-theme="light"] .theme-toggle .theme-label-when-light {
+  display: block;
+}
+
+/* ICONS */
+.theme-toggle svg.theme-icon-when-auto,
+.theme-toggle svg.theme-icon-when-dark,
+.theme-toggle svg.theme-icon-when-light {
+  fill: var(--header-link-color);
+  color: transparent;
+}
+
+html[data-theme="auto"] .theme-toggle svg.theme-icon-when-auto {
+  display: block;
+}
+
+html[data-theme="dark"] .theme-toggle svg.theme-icon-when-dark {
+  display: block;
+}
+
+html[data-theme="light"] .theme-toggle svg.theme-icon-when-light {
+  display: block;
+}

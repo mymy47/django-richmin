@@ -1039,7 +1039,7 @@ textarea {
   --object-tools-hover-bg: var(--close-button-hover-bg);
 }
 
-input[type=text], input[type=password], input[type=email], input[type=url],
+input[type=text], input[type=password], input[type=email], input[type=url], input[type=search],
 input[type=number], input[type=tel], textarea, select, .vTextField {
   border: 1px solid var(--border-color);
   border-radius: 4px;
@@ -1093,4 +1093,8 @@ ul.errorlist {
   border: 0;
   color: var(--body-fg);
   background-color: var(--body-bg);
+}
+
+#nav-filter.no-results {
+  background: var(--message-error-bg);
 }

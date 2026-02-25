@@ -37,6 +37,10 @@
   <link rel="stylesheet" href="{% static "richmin/css/dark-mode.css" %}">
   <script src="{% static "richmin/js/theme.js" %}"></script>
 
+  {% if not is_popup and is_nav_sidebar_enabled %}
+    <script src="{% static 'richmin/js/nav_sidebar.js' %}" defer></script>
+  {% endif %}
+
   {% if LANGUAGE_BIDI %}
     <link rel="stylesheet" href="{% static "richmin/css/bootstrap-rtl.min.css" %}">
     <link rel="stylesheet" href="{% static "richmin/css/rtl.css" %}">
@@ -273,6 +277,18 @@
             <nav class="mt-2">
               <ul class="nav nav-pills nav-sidebar flex-column {{ richmin_ui.sidebar_list_classes }}"
                   data-widget="treeview" role="menu" data-collapsible="false">
+
+                {% if not is_popup and is_nav_sidebar_enabled %}
+                  <li class="nav-item mb-3">
+                    <div id="search-nav" class="input-search input-group input-group-sm">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                      </div>
+                      <input type="search" id="nav-filter" class="form-control" placeholder="{% trans 'Filter menu…' %}"
+                             aria-label="Filter navigation items">
+                    </div>
+                  </li>
+                {% endif %}
 
                 <li class="nav-item">
                   <a href="{% url 'admin:index' %}" class="nav-link">

@@ -160,6 +160,12 @@ html[data-theme="dark"] {
   border-color: var(--body-bg);
 }
 
+[data-theme=dark] .input-group-text {
+  color: var(--body-fg);
+  background-color: var(--body-bg);
+  border: 1px solid var(--border-color);
+}
+
 /* THEME SWITCH */
 .theme-toggle {
   cursor: pointer;

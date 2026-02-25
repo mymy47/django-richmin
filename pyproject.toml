@@ -1,12 +1,54 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=61.2", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-richmin"
+version = "0.3.4"
+description = "Customized lte-bootstrap django admin theme with some useful tools"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.6"
+license = {text = "MIT License"}
+authors = [
+  {name = "my47", email = "mymy47@gmail.com"}
+]
+keywords = []
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Web Environment",
+  "Framework :: Django",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Framework :: Django :: 4.0",
+  "Framework :: Django :: 4.1",
+  "Framework :: Django :: 4.2",
+  "Framework :: Django :: 5.0",
+  "Framework :: Django :: 5.1",
+  "Framework :: Django :: 5.2",
+  "Topic :: Software Development",
+  "Topic :: Software Development :: User Interfaces",
+]
+dependencies = [
+  "django>4,<6",
+]
+
+[project.urls]
+Homepage = "https://github.com/mymy47/django-richmin"
 
 [tool.setuptools]
 include-package-data = true
-
-[tool.setuptools.packages]
-find = { namespaces = false }
 
 [tool.setuptools_scm]
 version_file = "__tmp_version.py"
@@ -20,7 +62,6 @@ no-emit-trusted-host = true
 [tool.ruff]
 line-length = 120
 indent-width = 4
-
 exclude = [
   ".eggs",
   ".git",
@@ -29,7 +70,6 @@ exclude = [
   "dist",
   "migrations",
 ]
-
 format = { quote-style = "single" }
 
 [tool.ruff.lint]

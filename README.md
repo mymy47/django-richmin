@@ -44,7 +44,8 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 - Responsive
 - Select2 drop-downs
 - Bootstrap 4 & AdminLTE UI components
-- Using the latest [adminlte](https://adminlte.io/) + [bootstrap](https://getbootstrap.com/)
+- Support dark theme
+- Navbar filter
 
 ## Thanks
 This was initially a Fork of https://github.com/farridav/django-jazzmin

@@ -92,3 +92,6 @@ msgstr "حذف شده “{object}”."
 #, python-brace-format
 msgid "Could not reverse url from {instance}"
 msgstr "نشانی وب از {instance} برگردانده نشد"
+
+msgid "Filter menu…"
+msgstr "فیلتر کردن منو…"

@@ -1098,3 +1098,8 @@ ul.errorlist {
 #nav-filter.no-results {
   background: var(--message-error-bg);
 }
+
+#richy-languagemenu {
+  max-height: 800px;
+  overflow-y: auto;
+}

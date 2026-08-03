@@ -990,7 +990,7 @@ textarea {
 }
 
 :root {
-  --primary-fg: #333;
+  --primary-fg: #f1f1f1;
 
   --body-fg: #333;
   --body-bg: #fff;

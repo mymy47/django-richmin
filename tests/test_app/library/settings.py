@@ -238,8 +238,6 @@ RICHMIN_SETTINGS: dict[str, Any] = {
     # Relative paths to custom CSS/JS scripts (must be present in static files)
     'custom_css': None,
     'custom_js': None,
-    # Whether to show the UI customizer on the sidebar
-    'show_ui_builder': True,
     ###############
     # Change view #
     ###############
@@ -255,44 +253,42 @@ RICHMIN_SETTINGS: dict[str, Any] = {
         'auth.user': 'collapsible',
         'auth.group': 'vertical_tabs',
     },
-    # Add a language dropdown into the admin
-    'language_chooser': True,
 }
 
 if not DEBUG and not TEST:
     RICHMIN_SETTINGS['welcome_sign'] = 'Username: test@test.com, Password: test (Data resets nightly)'
 
 RICHMIN_UI_TWEAKS = {
-    'navbar_small_text': False,
-    'footer_small_text': False,
-    'body_small_text': False,
-    'brand_small_text': False,
-    'brand_colour': False,
-    'accent': 'accent-primary',
-    'navbar': 'navbar-white navbar-light',
-    'no_navbar_border': False,
-    'navbar_fixed': False,
-    'layout_boxed': False,
-    'footer_fixed': False,
-    'sidebar_fixed': False,
-    'sidebar': 'sidebar-dark-primary',
-    'sidebar_nav_small_text': False,
-    'sidebar_disable_expand': False,
-    'sidebar_nav_child_indent': False,
-    'sidebar_nav_compact_style': False,
-    'sidebar_nav_legacy_style': False,
-    'sidebar_nav_flat_style': False,
-    'theme': 'default',
     'dark_mode_theme': 'darkly',
-    'button_classes': {
-        'primary': 'btn-outline-primary',
-        'secondary': 'btn-outline-secondary',
-        'info': 'btn-outline-info',
-        'warning': 'btn-outline-warning',
-        'danger': 'btn-outline-danger',
-        'success': 'btn-outline-success',
-    },
 }
+#     'navbar_small_text': False,
+#     'footer_small_text': False,
+#     'body_small_text': False,
+#     'brand_small_text': False,
+#     'brand_colour': False,
+#     'accent': 'accent-primary',
+#     'navbar': 'navbar-white navbar-light',
+#     'no_navbar_border': False,
+#     'navbar_fixed': False,
+#     'layout_boxed': False,
+#     'footer_fixed': False,
+#     'sidebar_fixed': False,
+#     'sidebar': 'sidebar-dark-primary',
+#     'sidebar_nav_small_text': False,
+#     'sidebar_disable_expand': False,
+#     'sidebar_nav_child_indent': False,
+#     'sidebar_nav_compact_style': False,
+#     'sidebar_nav_legacy_style': False,
+#     'sidebar_nav_flat_style': False,
+#     'button_classes': {
+#         'primary': 'btn-outline-primary',
+#         'secondary': 'btn-outline-secondary',
+#         'info': 'btn-outline-info',
+#         'warning': 'btn-outline-warning',
+#         'danger': 'btn-outline-danger',
+#         'success': 'btn-outline-success',
+#     },
+# }
 
 ################
 # App settings #

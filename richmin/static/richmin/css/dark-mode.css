@@ -17,9 +17,9 @@
     --breadcrumbs-link-fg: #e0e0e0;
     --breadcrumbs-bg: var(--primary);
 
-    --link-fg: #81d4fa;
-    --link-hover-color: #4ac1f7;
-    --link-selected-fg: #6f94c6;
+    --link-fg: #8fb8d8;
+    --link-hover-color: #b3d1e8;
+    --link-selected-fg: #769dbd;
 
     --hairline-color: #272727;
     --border-color: #353535;
@@ -58,9 +58,9 @@ html[data-theme="dark"] {
   --breadcrumbs-link-fg: #e0e0e0;
   --breadcrumbs-bg: var(--primary);
 
-  --link-fg: #81d4fa;
-  --link-hover-color: #4ac1f7;
-  --link-selected-fg: #6f94c6;
+  --link-fg: #8fb8d8;
+  --link-hover-color: #b3d1e8;
+  --link-selected-fg: #769dbd;
 
   --hairline-color: #272727;
   --border-color: #353535;
@@ -80,7 +80,7 @@ html[data-theme="dark"] {
   color-scheme: dark;
 }
 
-.form-control:focus {
+[data-theme=dark] .form-control:focus {
   color: var(--primary-fg);
   background-color: var(--body-bg);
   border-color: var(--primary-fg);
@@ -112,7 +112,17 @@ html[data-theme="dark"] {
 
 [data-theme=dark] .nav-tabs .nav-item.show .nav-link,[data-theme=dark] .nav-tabs .nav-link.active {
   background-color: var(--body-bg);
-  color: var(--primary-fg);
+  color: var(--primary-fg) !important;
+  border-color: var(--nav-border) var(--nav-border) var(--body-bg);
+}
+
+[data-theme=dark] .nav-tabs {
+  border-bottom-color: var(--nav-border);
+}
+
+[data-theme=dark] .nav-tabs .nav-link:hover,
+[data-theme=dark] .nav-tabs .nav-link:focus {
+  border-color: var(--border-color) var(--border-color) var(--nav-border);
 }
 
 
@@ -164,6 +174,179 @@ html[data-theme="dark"] {
   color: var(--body-fg);
   background-color: var(--body-bg);
   border: 1px solid var(--border-color);
+}
+
+/* Keep content links readable without Bootswatch's highly saturated blue. */
+[data-theme=dark] .content-wrapper a:not(.btn),
+[data-theme=dark] .main-footer a:not(.btn) {
+  /* AdminLTE's .accent-* selectors have unusually high specificity. */
+  color: var(--link-fg) !important;
+}
+
+[data-theme=dark] .content-wrapper a:not(.btn):hover,
+[data-theme=dark] .content-wrapper a:not(.btn):focus,
+[data-theme=dark] .main-footer a:not(.btn):hover,
+[data-theme=dark] .main-footer a:not(.btn):focus {
+  color: var(--link-hover-color) !important;
+}
+
+[data-theme=dark] .content-wrapper a:not(.btn):focus-visible {
+  outline: 2px solid var(--link-selected-fg);
+  outline-offset: 2px;
+}
+
+/* Bootstrap and AdminLTE components do not use Django's colour variables. */
+[data-theme=dark] .form-control:not(.btn),
+[data-theme=dark] .custom-select,
+[data-theme=dark] .related-widget-wrapper select,
+[data-theme=dark] select {
+  color: var(--body-fg);
+  background-color: var(--body-bg);
+  border-color: var(--border-color);
+}
+
+[data-theme=dark] .form-control:focus,
+[data-theme=dark] .custom-select:focus,
+[data-theme=dark] select:focus {
+  color: var(--primary-fg);
+  background-color: var(--body-bg);
+  border-color: var(--nav-border);
+  box-shadow: 0 0 0 .2rem rgba(86, 96, 106, .25);
+}
+
+[data-theme=dark] .btn-default,
+[data-theme=dark] .btn-light {
+  color: var(--body-fg);
+  background-color: var(--nav-bg);
+  border-color: var(--nav-border);
+}
+
+[data-theme=dark] .btn-default:hover,
+[data-theme=dark] .btn-default:focus,
+[data-theme=dark] .btn-light:hover,
+[data-theme=dark] .btn-light:focus {
+  color: var(--body-loud-color);
+  background-color: #4b545c;
+  border-color: #626d78;
+}
+
+[data-theme=dark] .table,
+[data-theme=dark] .table th,
+[data-theme=dark] .table td,
+[data-theme=dark] table th,
+[data-theme=dark] table td {
+  border-color: var(--border-color) !important;
+}
+
+[data-theme=dark] .table-hover tbody tr:hover,
+[data-theme=dark] .table-striped tbody tr:nth-of-type(odd) {
+  color: var(--body-fg);
+  background-color: var(--selected-bg);
+}
+
+[data-theme=dark] .select2-container--default .select2-selection--multiple,
+[data-theme=dark] .select2-container--default .select2-selection--single,
+[data-theme=dark] .select2-dropdown,
+[data-theme=dark] .select2-search__field {
+  color: var(--body-fg);
+  background-color: var(--body-bg);
+  border-color: var(--border-color) !important;
+}
+
+[data-theme=dark] .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  color: var(--body-fg);
+  background-color: var(--nav-bg);
+  border-color: var(--nav-border);
+}
+
+[data-theme=dark] .select2-container--default .select2-results__option[aria-selected="true"] {
+  color: var(--body-fg);
+  background-color: var(--selected-bg);
+}
+
+[data-theme=dark] .dropdown-menu,
+[data-theme=dark] .modal-content,
+[data-theme=dark] .list-group-item,
+[data-theme=dark] .calendarbox,
+[data-theme=dark] .clockbox,
+[data-theme=dark] .calendar table {
+  color: var(--body-fg);
+  background-color: var(--body-bg);
+  border-color: var(--border-color);
+}
+
+[data-theme=dark] .dropdown-item {
+  color: var(--body-fg);
+}
+
+[data-theme=dark] .dropdown-item:hover,
+[data-theme=dark] .dropdown-item:focus {
+  color: var(--body-loud-color);
+  background-color: var(--selected-bg);
+}
+
+[data-theme=dark] .page-link {
+  color: var(--link-fg);
+  background-color: var(--body-bg);
+  border-color: var(--border-color);
+}
+
+[data-theme=dark] .page-link:hover,
+[data-theme=dark] .page-link:focus {
+  color: var(--link-hover-color);
+  background-color: var(--selected-bg);
+  border-color: var(--nav-border);
+}
+
+[data-theme=dark] .page-item.disabled .page-link {
+  color: var(--body-quiet-color);
+  background-color: var(--darkened-bg);
+  border-color: var(--border-color);
+}
+
+[data-theme=dark] .btn-outline-secondary {
+  color: #b8c0c7;
+  border-color: var(--nav-border);
+}
+
+[data-theme=dark] .btn-outline-secondary:hover,
+[data-theme=dark] .btn-outline-secondary:focus {
+  color: var(--body-loud-color);
+  background-color: var(--nav-bg);
+  border-color: #6c7883;
+}
+
+[data-theme=dark] .bg-light,
+[data-theme=dark] .table .thead-light th,
+[data-theme=dark] .table-light,
+[data-theme=dark] .table-light > th,
+[data-theme=dark] .table-light > td {
+  color: var(--body-fg) !important;
+  background-color: var(--darkened-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+[data-theme=dark] .text-dark {
+  color: var(--body-fg) !important;
+}
+
+[data-theme=dark] .text-muted {
+  color: #aeb6bd !important;
+}
+
+[data-theme=dark] .card,
+[data-theme=dark] .card-header,
+[data-theme=dark] .card-footer,
+[data-theme=dark] .modal-header,
+[data-theme=dark] .modal-footer,
+[data-theme=dark] .list-group-item,
+[data-theme=dark] hr,
+[data-theme=dark] .border,
+[data-theme=dark] .border-top,
+[data-theme=dark] .border-right,
+[data-theme=dark] .border-bottom,
+[data-theme=dark] .border-left {
+  border-color: var(--border-color) !important;
 }
 
 /* THEME SWITCH */

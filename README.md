@@ -8,6 +8,26 @@ Drop-in theme for django admin, that utilises AdminLTE 3 & Bootstrap 4 to make y
 pip install django-richmin
 ```
 
+## Releasing
+
+Install the release tools once:
+
+```shell
+python -m pip install -r requirements.release.txt
+```
+
+After updating the package version, build, validate, and upload the release to
+PyPI with one command on Windows, Linux, or macOS:
+
+```shell
+python release.py
+```
+
+Twine will use your configured PyPI credentials or prompt for them. The script
+removes old generated files from `build/` and `dist/` before building, so only
+the current release is uploaded. Uploads are verbose and safe to retry: files
+that PyPI already accepted are skipped while any remaining files are uploaded.
+
 #### Support Iframe in admin popups
 
 Add this config to django settings.py:

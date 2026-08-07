@@ -6,15 +6,17 @@
       console.error(`Got invalid theme mode: ${mode}. Resetting to auto.`);
       mode = "auto";
     }
-    document.documentElement.dataset.theme = mode;
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const effectiveTheme = mode === "auto" ? (prefersDark ? "dark" : "light") : mode;
+    document.documentElement.dataset.theme = effectiveTheme;
+    document.documentElement.dataset.themeMode = mode;
     localStorage.setItem("theme", mode);
 
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     const navbar = document.querySelector('.navbar');
     const bodyTag = document.querySelector('body');
     const contentWrapper = document.querySelector('.content-wrapper');
     const mainFooter = document.querySelector('.main-footer');
-    if (mode === 'dark' || (mode === 'auto' && prefersDark)) {
+    if (effectiveTheme === 'dark') {
       // Is in dark theme
 
       if (!!navbar) {
@@ -60,6 +62,18 @@
   }
 
   initTheme();
+
+  const colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const syncAutoTheme = function () {
+    if ((localStorage.getItem("theme") || "auto") === "auto") {
+      setTheme("auto");
+    }
+  };
+  if (colorSchemeQuery.addEventListener) {
+    colorSchemeQuery.addEventListener("change", syncAutoTheme);
+  } else {
+    colorSchemeQuery.addListener(syncAutoTheme);
+  }
 
   window.addEventListener('load', function (e) {
 

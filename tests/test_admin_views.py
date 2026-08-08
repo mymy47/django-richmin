@@ -37,11 +37,11 @@ def test_login(client, admin_user):
 @pytest.mark.django_db
 def test_logout(admin_client):
     """
-    We can log out, and render the logout page
+    We can log out with POST, and render the logout page
     """
     url = reverse('admin:logout')
 
-    response = admin_client.get(url)
+    response = admin_client.post(url)
     templates_used = [t.name for t in response.templates]
 
     assert response.status_code == 200
@@ -181,6 +181,7 @@ def test_dashboard(admin_client):
     templates_used = [t.name for t in response.templates]
 
     assert response.status_code == 200
+    assert f'<form method="post" action="{reverse("admin:logout")}">' in response.content.decode()
     assert templates_used == [
         'admin/index.html',
         'admin/base_site.html',

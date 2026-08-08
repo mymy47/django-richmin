@@ -5,6 +5,7 @@ venv*/
 env*/
 *.egg-info
 tmp.*
+tmp-*.log
 *.tmp
 *.tmp.*
 .data/

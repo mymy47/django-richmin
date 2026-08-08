@@ -755,6 +755,10 @@ body.no-sidebar .main-header {
   max-width: 100%;
 }
 
+.login-logo img {
+  max-height: 125px;
+}
+
 #richy-collapsible .collapsible-header:hover {
   background: #007bff;
   color: white;

@@ -21,6 +21,7 @@ class Book(models.Model):
     )
     genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
     published_on = models.DateField()
+    published_at = models.DateTimeField(null=True, blank=True)
     last_print = models.DateField(auto_now_add=True)
     pages = models.IntegerField(null=True)
 

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.html import format_html
 from django.utils.timesince import timesince
 
+from richmin.admin import RichminAdmin, RichminTabularInline
 from richmin.admin_mixin import GlobalFilterMixin
 from richmin.utils import attr
 from .models import Author, Book, Genre
@@ -13,12 +14,12 @@ from ..loans.admin import BookLoanInline
 admin.site.unregister(User)
 
 
-class BooksInline(admin.TabularInline):
+class BooksInline(RichminTabularInline):
     model = Book
 
 
 @admin.register(Book)
-class BookAdmin(GlobalFilterMixin, admin.ModelAdmin):
+class BookAdmin(GlobalFilterMixin, RichminAdmin):
     fieldsets = (
         (
             'general',
@@ -27,10 +28,10 @@ class BookAdmin(GlobalFilterMixin, admin.ModelAdmin):
                 'description': 'General book fields',
             },
         ),
-        ('other', {'fields': ('genre', 'summary', 'isbn', 'published_on', 'pages')}),
+        ('other', {'fields': ('genre', 'summary', 'isbn', 'published_on', 'published_at', 'pages')}),
     )
     raw_id_fields = ('author',)
-    list_display = ('__str__', 'title', 'author', 'pages')
+    list_display = ('__str__', 'title', 'author', 'pages', 'published_on', 'published_at')
     readonly_fields = ('__str__',)
     list_per_page = 20
     list_max_show_all = 100

@@ -1,11 +1,12 @@
 from django.contrib import admin
 from django.urls import path
 
+from richmin.admin import RichminAdmin, RichminStackedInline
 from .models import BookLoan, Library
 from .views import CustomView
 
 
-class BookLoanInline(admin.StackedInline):
+class BookLoanInline(RichminStackedInline):
     model = BookLoan
     extra = 1
     readonly_fields = ('id', 'duration')
@@ -21,7 +22,7 @@ class BookLoanInline(admin.StackedInline):
 
 
 @admin.register(BookLoan)
-class BookLoanAdmin(admin.ModelAdmin):
+class BookLoanAdmin(RichminAdmin):
     list_display = ('book', 'status', 'borrower', 'due_back', 'id')
     list_filter = ('status', 'due_back')
     autocomplete_fields = ('borrower',)
@@ -29,7 +30,7 @@ class BookLoanAdmin(admin.ModelAdmin):
     readonly_fields = ('id',)
     fieldsets = (
         (None, {'fields': ('book', 'imprint', 'id')}),
-        ('Availability', {'fields': ('status', 'due_back', 'duration', 'borrower')}),
+        ('Availability', {'fields': ('status', 'loan_start', 'due_back', 'duration', 'borrower')}),
     )
 
     def get_urls(self):

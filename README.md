@@ -88,3 +88,31 @@ This was initially a Fork of https://github.com/farridav/django-jazzmin
 - Based on AdminLTE 3: https://adminlte.io/
 - Using Bootstrap 4: https://getbootstrap.com/
 - Using Font Awesome 5: https://fontawesome.com/
+
+# Jalali dates in the Persian admin
+
+When Persian (`fa`) is the active language, inherit model admins from `RichminAdmin` to use a Jalali date picker for
+`DateField` and `DateTimeField` form inputs and Jalali formatting for those fields in change-list tables. Database values
+remain ordinary Gregorian Django dates.
+
+```python
+from richmin.admin import RichminAdmin
+
+@admin.register(Event)
+class EventAdmin(RichminAdmin):
+    list_display = ('name', 'starts_at')
+```
+
+`RichminAdmin` is the recommended base for regular model admins. For an admin that must already inherit from another
+base, put `JalaliAdminMixin` first. Jalali-ready stacked and tabular inline bases are also available:
+
+```python
+from django.contrib.auth.admin import UserAdmin
+from richmin.admin import JalaliAdminMixin, RichminTabularInline
+
+class CustomUserAdmin(JalaliAdminMixin, UserAdmin):
+    pass
+
+class EventInline(RichminTabularInline):
+    model = Event
+```

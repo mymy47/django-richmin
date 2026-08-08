@@ -55,6 +55,9 @@
   {% endif %}
 
   <link rel="stylesheet" href="{% static 'admin/css/vendor/select2/select2.min.css' %}">
+  {% if LANGUAGE_CODE|slice:':2' == 'fa' %}
+    <link rel="stylesheet" href="{% static 'richmin/vendor/jalalidatepicker/jalalidatepicker.min.css' %}">
+  {% endif %}
 
   {% block extrastyle %} {% endblock %}
   {% block extrahead %} {% endblock %}
@@ -475,6 +478,11 @@
 {% endif %}
 
 {% block extrajs %}{% endblock %}
+
+{% if LANGUAGE_CODE|slice:':2' == 'fa' %}
+  <script src="{% static 'richmin/vendor/jalalidatepicker/jalalidatepicker.min.js' %}"></script>
+  <script src="{% static 'richmin/js/jalali-datepicker-init.js' %}"></script>
+{% endif %}
 
 <!-- SVGs -->
 <svg xmlns="http://www.w3.org/2000/svg" class="base-svgs">

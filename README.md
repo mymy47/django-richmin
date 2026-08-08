@@ -41,7 +41,7 @@ Richmin keeps Django's familiar `ModelAdmin` workflow intact: install the app be
 ## Installation
 
 ```shell
-python -m pip install django-richmin
+pip install django-richmin
 ```
 
 Add `richmin` **before** `django.contrib.admin` so its templates take precedence:

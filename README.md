@@ -67,6 +67,21 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 - Support dark theme
 - Navbar filter
 
+## Theme configuration
+
+Richmin uses the modern theme by default. To restore the original Richmin
+appearance, select the legacy theme in Django settings:
+
+```python
+RICHMIN_SETTINGS = {
+    'theme': 'legacy',
+}
+```
+
+Available themes are `default` and `legacy`. Each theme provides an independent
+light and dark stylesheet, while the Auto/Light/Dark toggle controls which mode
+is active.
+
 ## Thanks
 This was initially a Fork of https://github.com/farridav/django-jazzmin
 

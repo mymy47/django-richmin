@@ -3,6 +3,7 @@
 {% get_current_language_bidi as LANGUAGE_BIDI %}
 {% get_richmin_settings request as richmin_settings %}
 {% get_richmin_ui_tweaks as richmin_ui %}
+{% get_richmin_version as richmin_version %}
 
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
@@ -19,8 +20,11 @@
   <!-- Bootstrap and adminLTE -->
   <link rel="stylesheet" href="{% static "vendor/adminlte/css/adminlte.min.css" %}">
 
-  <!-- Custom fixes for django -->
-  <link rel="stylesheet" href="{% static "richmin/css/main.css" %}">
+  <!-- Selected Richmin theme: paired light and dark stylesheets -->
+  <link rel="stylesheet" href="{% static "richmin/css/main.css" %}?v={{ richmin_version|urlencode }}">
+  <link rel="stylesheet" href="{% static richmin_settings.theme_css.light %}?v={{ richmin_version|urlencode }}" data-richmin-theme="{{ richmin_settings.theme }}" data-theme-mode="light">
+  <link rel="stylesheet" href="{% static richmin_settings.theme_css.dark %}?v={{ richmin_version|urlencode }}" data-richmin-theme="{{ richmin_settings.theme }}" data-theme-mode="dark">
+  <script src="{% static "richmin/js/theme.js" %}?v={{ richmin_version|urlencode }}"></script>
 
   {% if LANGUAGE_BIDI %}
     <link rel="stylesheet" href="{% static "richmin/css/rtl.css" %}">

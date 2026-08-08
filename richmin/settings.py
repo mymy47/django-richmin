@@ -9,6 +9,8 @@ from .utils import get_admin_url, get_model, get_model_meta
 logger = logging.getLogger(__name__)
 
 DEFAULT_SETTINGS: dict[str, Any] = {
+    # Visual theme. Every theme provides matching light and dark stylesheets.
+    'theme': 'default',
     # title of the window (Will default to current_admin_site.site_title)
     'site_title': None,
     # Title on the login screen (19 chars max) (will default to current_admin_site.site_header)
@@ -106,6 +108,17 @@ DEFAULT_SETTINGS: dict[str, Any] = {
     'enable_ctrl_s_save': True,
 }
 
+THEMES = {
+    'default': {
+        'light': 'richmin/css/themes/default/light.css',
+        'dark': 'richmin/css/themes/default/dark.css',
+    },
+    'legacy': {
+        'light': 'richmin/css/themes/legacy/light.css',
+        'dark': 'richmin/css/themes/legacy/dark.css',
+    },
+}
+
 #######################################
 # Currently available UI tweaks       #
 # Use the UI builder to generate this #
@@ -186,6 +199,13 @@ def get_settings() -> dict:
     richmin_settings = copy.deepcopy(DEFAULT_SETTINGS)
     user_settings = {x: y for x, y in getattr(settings, 'RICHMIN_SETTINGS', {}).items() if y is not None}
     richmin_settings.update(user_settings)
+
+    theme = richmin_settings['theme']
+    if theme not in THEMES:
+        logger.warning("Unknown Richmin theme %r; using 'default'", theme)
+        theme = 'default'
+    richmin_settings['theme'] = theme
+    richmin_settings['theme_css'] = THEMES[theme]
 
     # Extract search model configuration from search_model setting
     if richmin_settings['search_model']:

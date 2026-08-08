@@ -258,9 +258,7 @@ RICHMIN_SETTINGS: dict[str, Any] = {
 if not DEBUG and not TEST:
     RICHMIN_SETTINGS['welcome_sign'] = 'Username: test@test.com, Password: test (Data resets nightly)'
 
-RICHMIN_UI_TWEAKS = {
-    'dark_mode_theme': 'darkly',
-}
+RICHMIN_UI_TWEAKS = {}
 #     'navbar_small_text': False,
 #     'footer_small_text': False,
 #     'body_small_text': False,

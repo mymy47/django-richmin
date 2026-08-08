@@ -333,7 +333,6 @@ html[data-theme="dark"] {
   border: 1px solid var(--border-color);
 }
 
-/* Keep content links readable without Bootswatch's highly saturated blue. */
 [data-theme=dark] .content-wrapper a:not(.btn):not(.inline-deletelink),
 [data-theme=dark] .main-footer a:not(.btn):not(.inline-deletelink) {
   /* AdminLTE's .accent-* selectors have unusually high specificity. */

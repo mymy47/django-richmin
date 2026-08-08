@@ -16,8 +16,6 @@
     "danger",
     "success",
   ]
-  const darkThemes = ["darkly", "cyborg", "slate", "solar", "superhero"]
-
   window.ui_changes = window.ui_changes || {'button_classes': {}};
 
   function miscListeners() {
@@ -92,84 +90,6 @@
           /null/g, 'None'
         )
       );
-    });
-  }
-
-  function themeSpecificTweaks(theme) {
-    if (darkThemes.indexOf(theme) > -1) {
-      $('#navbar-variants .bg-dark').click();
-      $("#richmin-btn-style-primary").val('btn-primary').change();
-      $("#richmin-btn-style-secondary").val('btn-secondary').change();
-      $body.addClass('dark-mode');
-    } else {
-      $('#navbar-variants .bg-white').click();
-      $("#richmin-btn-style-primary").val('btn-outline-primary').change();
-      $("#richmin-btn-style-secondary").val('btn-outline-secondary').change();
-      $body.removeClass('dark-mode');
-    }
-  }
-
-  function themeChooserListeners() {
-    // Theme chooser (standard)
-    $("#richmin-theme-chooser").on('change', function () {
-      let $themeCSS = $('#richmin-theme');
-
-      // If we are using the default theme, there will be no theme css, just the bundled one in adminlte
-      if (!$themeCSS.length) {
-        const staticSrc = $('#adminlte-css').attr('href').split('vendor')[0]
-        $themeCSS = $('<link>').attr({
-          'href': staticSrc + 'vendor/bootswatch/default/bootstrap.min.css',
-          'rel': 'stylesheet',
-          'id': 'richmin-theme'
-        }).appendTo('head');
-      }
-
-      const currentSrc = $themeCSS.attr('href');
-      const currentTheme = currentSrc.split('/')[4];
-      let newTheme = $(this).val();
-
-      $themeCSS.attr('href', currentSrc.replace(currentTheme, newTheme));
-
-      $body.removeClass(function (index, className) {
-        return (className.match(/(^|\s)theme-\S+/g) || []).join(' ');
-      });
-      $body.addClass('theme-' + newTheme);
-
-      themeSpecificTweaks(newTheme);
-
-      window.ui_changes['theme'] = newTheme;
-    });
-
-    // Theme chooser (dark mode)
-    $("#richmin-dark-mode-theme-chooser").on('change', function () {
-      let $themeCSS = $('#richmin-dark-mode-theme');
-      // If we are using the default theme, there will be no theme css, just the bundled one in adminlte
-
-      if (this.value === "") {
-        $themeCSS.remove();
-        window.ui_changes['dark_mode_theme'] = null;
-        return
-      }
-
-      if (!$themeCSS.length) {
-        const staticSrc = $('#adminlte-css').attr('href').split('vendor')[0]
-        $themeCSS = $('<link>').attr({
-          'href': staticSrc + 'vendor/bootswatch/darkly/bootstrap.min.css',
-          'rel': 'stylesheet',
-          'id': 'richmin-dark-mode-theme',
-          'media': '(prefers-color-scheme: dark)'
-        }).appendTo('head');
-      }
-
-      const currentSrc = $themeCSS.attr('href');
-      const currentTheme = currentSrc.split('/')[4];
-      const newTheme = $(this).val();
-
-      $themeCSS.attr('href', currentSrc.replace(currentTheme, newTheme));
-
-      themeSpecificTweaks(newTheme);
-
-      window.ui_changes['dark_mode_theme'] = newTheme;
     });
   }
 
@@ -299,8 +219,6 @@
   }
 
   function setFromExisting() {
-    $('#richmin-theme-chooser').val(window.ui_changes['theme']);
-    $('#richmin-dark-mode-theme-chooser').val(window.ui_changes['dark_mode_theme']);
     $('#theme-condition').val(window.ui_changes['theme_condition']);
     $('#body-small-text').get(0).checked = window.ui_changes['body_small_text'];
     $('#footer-small-text').get(0).checked = window.ui_changes['footer_small_text'];
@@ -334,7 +252,6 @@
    */
   if (!$body.hasClass("popup")) {
     setFromExisting();
-    themeChooserListeners();
     miscListeners();
     navBarTweaksListeners();
     sideBarTweaksListeners();

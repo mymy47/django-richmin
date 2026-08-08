@@ -3,7 +3,6 @@ import logging
 from typing import Any
 
 from django.conf import settings
-from django.templatetags.static import static
 
 from .utils import get_admin_url, get_model, get_model_meta
 
@@ -151,10 +150,6 @@ DEFAULT_UI_TWEAKS: dict[str, Any] = {
     'sidebar_nav_legacy_style': False,
     # Use a flat style sidebar
     'sidebar_nav_flat_style': False,
-    # Bootstrap theme to use (default, or from bootswatch, see THEMES below)
-    'theme': 'default',
-    # Theme to use instead if the user has opted for dark mode (e.g darkly/cyborg/slate/solar/superhero)
-    'dark_mode_theme': None,
     # The classes/styles to use with buttons
     'button_classes': {
         'primary': 'btn-outline-primary',
@@ -166,35 +161,6 @@ DEFAULT_UI_TWEAKS: dict[str, Any] = {
     },
     'actions_sticky_top': True,
 }
-
-THEMES = {
-    # light themes
-    'default': 'vendor/bootswatch/default/bootstrap.min.css',
-    'cerulean': 'vendor/bootswatch/cerulean/bootstrap.min.css',
-    'cosmo': 'vendor/bootswatch/cosmo/bootstrap.min.css',
-    'flatly': 'vendor/bootswatch/flatly/bootstrap.min.css',
-    'journal': 'vendor/bootswatch/journal/bootstrap.min.css',
-    'litera': 'vendor/bootswatch/litera/bootstrap.min.css',
-    'lumen': 'vendor/bootswatch/lumen/bootstrap.min.css',
-    'lux': 'vendor/bootswatch/lux/bootstrap.min.css',
-    'materia': 'vendor/bootswatch/materia/bootstrap.min.css',
-    'minty': 'vendor/bootswatch/minty/bootstrap.min.css',
-    'pulse': 'vendor/bootswatch/pulse/bootstrap.min.css',
-    'sandstone': 'vendor/bootswatch/sandstone/bootstrap.min.css',
-    'simplex': 'vendor/bootswatch/simplex/bootstrap.min.css',
-    'sketchy': 'vendor/bootswatch/sketchy/bootstrap.min.css',
-    'spacelab': 'vendor/bootswatch/spacelab/bootstrap.min.css',
-    'united': 'vendor/bootswatch/united/bootstrap.min.css',
-    'yeti': 'vendor/bootswatch/yeti/bootstrap.min.css',
-    # dark themes
-    'darkly': 'vendor/bootswatch/darkly/bootstrap.min.css',
-    'cyborg': 'vendor/bootswatch/cyborg/bootstrap.min.css',
-    'slate': 'vendor/bootswatch/slate/bootstrap.min.css',
-    'solar': 'vendor/bootswatch/solar/bootstrap.min.css',
-    'superhero': 'vendor/bootswatch/superhero/bootstrap.min.css',
-}
-
-DARK_THEMES = ('darkly', 'cyborg', 'slate', 'solar', 'superhero')
 
 CHANGEFORM_TEMPLATES = {
     'single': 'richmin/includes/single.html',
@@ -320,23 +286,8 @@ def get_ui_tweaks() -> dict:
     def classes(*args: str) -> str:
         return ' '.join([tweaks.get(arg, '') for arg in args]).strip()
 
-    theme = tweaks['theme']
-    if theme not in THEMES:
-        logger.warning(f'{theme} not found in {THEMES.keys()}, using default')
-        theme = 'default'
-
-    dark_mode_theme = tweaks.get('dark_mode_theme')
-    if dark_mode_theme and dark_mode_theme not in DARK_THEMES:
-        logger.warning(f'{dark_mode_theme} is not a dark theme, using darkly')
-        dark_mode_theme = 'darkly'
-
-    theme_body_classes = f' theme-{theme}'
-    if theme in DARK_THEMES:
-        theme_body_classes += ' dark-mode'
-
     ret = {
         'raw': raw_tweaks,
-        'theme': {'name': theme, 'src': static(THEMES[theme])},
         'sidebar_classes': classes('sidebar', 'sidebar_disable_expand'),
         'navbar_classes': classes('navbar', 'no_navbar_border', 'navbar_small_text'),
         'body_classes': classes(
@@ -346,8 +297,7 @@ def get_ui_tweaks() -> dict:
             'footer_fixed',
             'sidebar_fixed',
             'layout_boxed',
-        )
-        + theme_body_classes,
+        ),
         'actions_classes': classes('actions_sticky_top'),
         'sidebar_list_classes': classes(
             'sidebar_nav_small_text',
@@ -360,11 +310,5 @@ def get_ui_tweaks() -> dict:
         'footer_classes': classes('footer_small_text'),
         'button_classes': tweaks['button_classes'],
     }
-
-    if dark_mode_theme:
-        ret['dark_mode_theme'] = {
-            'name': dark_mode_theme,
-            'src': static(THEMES[dark_mode_theme]),
-        }
 
     return ret

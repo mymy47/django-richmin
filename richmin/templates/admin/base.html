@@ -4,6 +4,7 @@
 {% get_richmin_settings request as richmin_settings %}
 {% get_richmin_ui_tweaks as richmin_ui %}
 {% get_selected_filters request as selected_filters %}
+{% get_richmin_version as richmin_version %}
 
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
@@ -21,16 +22,6 @@
 
   <!-- Bootstrap and adminLTE -->
   <link rel="stylesheet" href="{% static "vendor/adminlte/css/adminlte.min.css" %}" id="adminlte-css">
-
-  <!-- Bootswatch theme -->
-  {% if richmin_ui.theme.name != 'default' %}
-    <link rel="stylesheet" href="{{ richmin_ui.theme.src }}" id="richmin-theme"/>
-  {% endif %}
-
-  {% if richmin_ui.dark_mode_theme %}
-    <link rel="stylesheet" href="{{ richmin_ui.dark_mode_theme.src }}" id="richmin-dark-mode-theme"
-          media="(prefers-color-scheme: dark)"/>
-  {% endif %}
 
   <!-- Custom fixes for django -->
   <link rel="stylesheet" href="{% static "richmin/css/main.css" %}">
@@ -68,7 +59,7 @@
   {% block extrahead %} {% endblock %}
 </head>
 <body
-  class="hold-transition{% if not richmin_settings.show_sidebar %} no-sidebar{% else %} sidebar-mini{% endif %} {% sidebar_status request %} {% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %} {{ richmin_ui.body_classes }} {% if richmin_ui.dark_mode_theme %}theme-dark{% endif %}"
+  class="hold-transition{% if not richmin_settings.show_sidebar %} no-sidebar{% else %} sidebar-mini{% endif %} {% sidebar_status request %} {% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %} {{ richmin_ui.body_classes }}"
   data-admin-utc-offset="{% now "Z" %}">
 
 <div class="wrapper">
@@ -407,7 +398,7 @@
     {% if not is_popup %}
       <footer class="main-footer {{ richmin_ui.footer_classes }}">
         <div class="float-right d-none d-sm-inline">
-          <b>{% trans 'version' %}</b> {% get_richmin_version %}
+          <b>{% trans 'version' %}</b> {{ richmin_version }}
         </div>
         {% autoescape off %}
           <strong>{% trans 'Copyright' %} &copy; {% now 'Y' %} {{ richmin_settings.copyright }}.</strong>

@@ -7,6 +7,7 @@ from django.utils.timesince import timesince
 
 from richmin.admin import RichminAdmin, RichminTabularInline
 from richmin.admin_mixin import GlobalFilterMixin
+from richmin.filters import DateInputFilter, InputFilter
 from richmin.utils import attr
 from .models import Author, Book, Genre
 from ..loans.admin import BookLoanInline
@@ -16,6 +17,16 @@ admin.site.unregister(User)
 
 class BooksInline(RichminTabularInline):
     model = Book
+
+
+class PublishedOnFilter(DateInputFilter):
+    title = 'Published on'
+    parameter_name = 'published_on'
+
+
+class ISBNFilter(InputFilter):
+    title = 'ISBN'
+    parameter_name = 'isbn'
 
 
 @admin.register(Book)
@@ -36,6 +47,7 @@ class BookAdmin(GlobalFilterMixin, RichminAdmin):
     list_per_page = 20
     list_max_show_all = 100
     list_editable = ('title',)
+    list_filter = (ISBNFilter, PublishedOnFilter)
     search_fields = ('title', 'author__last_name')
     autocomplete_fields = ('genre',)
     date_hierarchy = 'published_on'

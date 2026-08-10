@@ -5,6 +5,7 @@
     if (window.jalaliDatepicker) {
       window.jalaliDatepicker.startWatch({
         selector: 'input[data-jdp]',
+        zIndex: 10000,
         autoHide: true,
         autoShow: false,
       });

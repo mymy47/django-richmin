@@ -1,0 +1,9 @@
+{% load richmin %}
+<div class="form-group date-input-filter">
+  <input class="form-control {% if spec.is_jalali %}jalaliDateField{% else %}vDateField{% endif %}"
+         name="{{ field_name }}"
+         placeholder="{{ title }}"
+         type="text"
+         value="{{ spec.used_parameters|get_attr:field_name }}"
+         autocomplete="off"{% if spec.is_jalali %} data-jdp{% endif %}/>
+</div>

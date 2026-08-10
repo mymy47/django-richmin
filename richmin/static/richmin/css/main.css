@@ -269,6 +269,20 @@ input[type="text"] {
   content: "\f017";
 }
 
+/* Date list filters don't need Django's form-oriented timezone help text. */
+.date-input-filter .help {
+  display: none;
+}
+
+/* Keep the Jalali picker above AdminLTE's fixed navbar and RTL sidebar. */
+jdp-container {
+  z-index: 10000 !important;
+}
+
+jdp-overlay {
+  z-index: 9999 !important;
+}
+
 /* CALENDARS & CLOCKS */
 
 .calendarbox,

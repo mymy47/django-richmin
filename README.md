@@ -314,7 +314,51 @@ Available keys:
 
 When `layout_boxed` is enabled, fixed navbar and footer behavior is disabled to avoid conflicting layouts. Set `show_ui_builder` to `True` while experimenting; the builder previews and generates these choices.
 
+## Input list filters
+
+Use `InputFilter` when a change-list filter is better represented by a free-text
+input than a dropdown. The `parameter_name` can include any valid Django ORM
+lookup:
+
+```python
+from richmin.filters import InputFilter
+
+
+class UrlPathFilter(InputFilter):
+    title = 'URL path'
+    parameter_name = 'url_path'
+
+
+class ISBNFilter(InputFilter):
+    title = 'ISBN'
+    parameter_name = 'isbn'
+
+
+class BookAdmin(RichminAdmin):
+    list_filter = (ISBNFilter,)
+```
+
+Invalid values are reported through Django's messages framework and return an
+empty result set instead of raising an error page.
+
 ## Persian and Jalali dates
+
+Date list filters can use the same language-aware behavior with
+`DateInputFilter`. It renders Django's standard Gregorian date picker for other
+languages and a Jalali picker when Persian is active:
+
+```python
+from richmin.filters import DateInputFilter
+
+
+class PublishedOnFilter(DateInputFilter):
+    title = 'Published on'
+    parameter_name = 'published_on'
+
+
+class BookAdmin(RichminAdmin):
+    list_filter = (PublishedOnFilter,)
+```
 
 When Persian (`fa`) is the active language, `RichminAdmin` automatically uses a Jalali date picker for `DateField` and `DateTimeField` inputs and formats those fields as Jalali dates in change-list tables. Stored database values remain normal Gregorian Django dates.
 

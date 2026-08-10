@@ -2,6 +2,7 @@ import copy
 import itertools
 import json
 import logging
+import re
 import urllib.parse
 from collections.abc import Callable
 from typing import Any
@@ -632,3 +633,19 @@ def style_bold_first_word(message: str) -> SafeText | str:
 @register.filter
 def unicode_slugify(message: str) -> str:
     return slugify(message, allow_unicode=True)
+
+
+numeric_test = re.compile(r'^\d+$')
+
+
+@register.filter
+def get_attr(value, arg):
+    """Gets an attribute of an object dynamically from a string name"""
+
+    if hasattr(value, str(arg)):
+        return getattr(value, arg)
+    if isinstance(value, (list, dict)) and arg in value:
+        return value[arg]
+    if numeric_test.match(str(arg)) and len(value) > int(arg):
+        return value[int(arg)]
+    return ''

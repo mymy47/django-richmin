@@ -63,7 +63,7 @@ def format_jalali(value: date | datetime, include_time: bool = False) -> str:
     jy, jm, jd = gregorian_to_jalali(value)
     result = f'{jy:04d}/{jm:02d}/{jd:02d}'
     if include_time and isinstance(value, datetime):
-        result += value.strftime(' %H:%M:%S')
+        result += value.strftime('، %H:%M:%S')
     return result
 
 

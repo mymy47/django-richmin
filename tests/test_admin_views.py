@@ -2,6 +2,8 @@ import re
 
 import django
 import pytest
+from django.db import connection
+from django.test.utils import CaptureQueriesContext
 from richmin.compat import reverse
 
 from .test_app.library.books.models import Book
@@ -361,6 +363,20 @@ def test_list(admin_client):
 
     # The templates that were used
     assert set(templates_used) == expected_templates
+
+
+@pytest.mark.django_db
+def test_superuser_permissions_use_one_query(admin_client):
+    url = reverse('admin:auth_user_changelist')
+
+    with CaptureQueriesContext(connection) as queries:
+        response = admin_client.get(url)
+
+    sql = [query['sql'] for query in queries.captured_queries]
+    permission_queries = [query for query in sql if 'FROM "auth_permission"' in query]
+
+    assert response.status_code == 200
+    assert len(permission_queries) == 1
 
 
 @pytest.mark.django_db

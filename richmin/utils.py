@@ -6,7 +6,7 @@ from urllib.parse import urlencode
 from django.apps import apps
 from django.contrib.admin import ListFilter
 from django.contrib.admin.helpers import AdminForm
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Permission
 from django.db.models.base import Model, ModelBase
 from django.db.models.options import Options
 from django.urls import NoReverseMatch, reverse
@@ -154,6 +154,19 @@ def get_view_permissions(user: AbstractUser) -> set[str]:
     """
     Get model names based on a users view/change permissions
     """
+    if user.is_active and user.is_superuser and not hasattr(user, '_perm_cache'):
+        backend_permissions = getattr(user, '_user_perm_cache', None) or getattr(user, '_group_perm_cache', None)
+        if backend_permissions is None:
+            backend_permissions = {
+                f'{app_label}.{codename}'
+                for app_label, codename in Permission.objects.values_list(
+                    'content_type__app_label',
+                    'codename',
+                ).order_by()
+            }
+        user._user_perm_cache = backend_permissions
+        user._group_perm_cache = backend_permissions
+
     perms = user.get_all_permissions()
     # the perm codenames should always be lower case
     lower_perms = []

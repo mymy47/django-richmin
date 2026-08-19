@@ -116,3 +116,11 @@ def test_get_model_permissions_lowercased():
     user.user_permissions.update(codename=Upper('codename'))
 
     assert get_view_permissions(user) == {'books.book', 'books.author'}
+
+
+@pytest.mark.django_db
+def test_get_model_permissions_does_not_grant_permissions_to_regular_user():
+    user = UserFactory(permissions=())
+
+    assert get_view_permissions(user) == set()
+    assert not user.has_perm('auth.view_user')

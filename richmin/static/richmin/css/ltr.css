@@ -1,0 +1,49 @@
+.date-input-filter {
+  position: relative;
+}
+
+.date-input-filter .vDateField {
+  margin-bottom: 0;
+  padding-right: 2.75rem;
+}
+
+.date-input-filter .datetimeshortcuts {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  display: flex;
+  width: 2.5rem;
+  height: 38px;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+}
+
+.date-input-filter .datetimeshortcuts > a:first-of-type {
+  display: none;
+}
+
+.date-input-filter .datetimeshortcuts > a:last-of-type {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: var(--body-quiet-color);
+  background: transparent;
+  border-left: 1px solid var(--border-color);
+  border-radius: 0 7px 7px 0;
+  text-decoration: none;
+  transition: color .15s ease, background-color .15s ease;
+}
+
+.date-input-filter .datetimeshortcuts > a:last-of-type:hover,
+.date-input-filter .datetimeshortcuts > a:last-of-type:focus {
+  color: var(--link-fg);
+  background: var(--selected-bg);
+}
+
+.date-input-filter .date-icon::before {
+  font-size: .875rem;
+}

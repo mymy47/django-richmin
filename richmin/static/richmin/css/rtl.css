@@ -362,6 +362,22 @@ ul {
   right: 0;
 }
 
+/* Animate the RTL off-canvas sidebar on tablets and phones. */
+@media (max-width: 991.98px) {
+  .main-sidebar,
+  .main-sidebar::before {
+    transition: margin-right .28s cubic-bezier(.4, 0, .2, 1) !important;
+    will-change: margin-right;
+  }
+}
+
+@media (max-width: 991.98px) and (prefers-reduced-motion: reduce) {
+  .main-sidebar,
+  .main-sidebar::before {
+    transition: none !important;
+  }
+}
+
 /* Cards */
 
 .card-header > .card-tools {

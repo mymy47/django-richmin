@@ -154,13 +154,16 @@
               class="visually-hidden theme-label-when-light">{% translate 'Toggle theme (current theme: light)' %}</div>
             <div
               class="visually-hidden theme-label-when-dark">{% translate 'Toggle theme (current theme: dark)' %}</div>
-            <svg aria-hidden="true" class="theme-icon-when-auto">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"
+                 class="theme-icon-when-auto">
               <use xlink:href="#icon-auto"/>
             </svg>
-            <svg aria-hidden="true" class="theme-icon-when-dark">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"
+                 class="theme-icon-when-dark">
               <use xlink:href="#icon-moon"/>
             </svg>
-            <svg aria-hidden="true" class="theme-icon-when-light">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"
+                 class="theme-icon-when-light">
               <use xlink:href="#icon-sun"/>
             </svg>
           </a>
@@ -267,7 +270,7 @@
                   <a href="{% richy_admin_url request.user request.current_app|default:"admin" %}"
                      class="d-block">{{ request.user }}</a>
                 {% else %}
-                  <span class="d-block" style="color: white;">{{ request.user }}</span>
+                  <span class="d-block sidebar-user-name">{{ request.user }}</span>
                 {% endif %}
               </div>
             </div>
@@ -345,11 +348,11 @@
   <div class="content-wrapper" {% if is_popup %}style="margin-left:0px; padding-top: 20px;"{% endif %}>
     {% block page_content %}
       {% if not is_popup %}
-        <div class="content border-bottom mb-2">
+        <div class="content richy-page-header" id="richy-page-header">
           <div class="container-fluid">
-            <div class="row">
-              <div class="col-12 col-md-auto d-flex flex-grow-1 align-items-center">
-                <h1 class="h4 m-0 pr-3 mr-3 border-right">{% block content_title %}{% endblock %}</h1>
+            <div class="row align-items-center">
+              <div class="richy-page-heading col-12 col-md-auto d-flex flex-grow-1 align-items-center">
+                <h1 class="richy-page-title h4 m-0 pr-3 mr-3">{% block content_title %}{% endblock %}</h1>
                 {% block breadcrumbs %}{% endblock %}
               </div>
               {% block page_actions %}{% endblock %}

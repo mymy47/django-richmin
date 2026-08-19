@@ -687,6 +687,14 @@ a.active.selector-clearall:hover {
   border-top: none;
 }
 
+/* Align the legacy module heading with the dashboard cards without changing
+   the module's existing box or timeline styling. */
+.dashboard #recent-actions-module > h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  margin-right: 24px;
+}
+
 .vTimeField {
   margin-top: 10px;
 }

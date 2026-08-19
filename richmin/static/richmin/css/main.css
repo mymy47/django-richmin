@@ -144,6 +144,24 @@ tr.djn-tr > .original {
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
+/* Related widgets must share the available width with their action links. */
+.related-widget-wrapper {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.related-widget-wrapper .select2-container {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto !important;
+}
+
+.related-widget-wrapper .related-widget-wrapper-link {
+  flex: 0 0 auto;
+}
+
 .tab-pane {
   overflow-x: auto;
 }
@@ -159,6 +177,12 @@ table.dataTable thead .sorting_desc_disabled::after {
 
 .select2-container {
   min-width: 200px;
+}
+
+/* Keep Select2's source select from contributing its inline width to page overflow. */
+#change-list-filters select.select2-hidden-accessible {
+  width: 1px !important;
+  max-width: 1px !important;
 }
 
 .select2-container .select2-selection--single {
@@ -2032,6 +2056,15 @@ html[data-theme-mode="light"] .theme-toggle svg.theme-icon-when-light {
 }
 
 @media (max-width: 767.98px) {
+  .content-wrapper > .content:not(#richy-page-header) {
+    padding: .75rem .7rem;
+  }
+
+  body.change-form #content-main .card-body .p-5,
+  body.change-form #content-main .p-5 {
+    padding: 1rem !important;
+  }
+
   #richy-page-header {
     padding: .75rem .7rem .5rem;
   }
@@ -2057,6 +2090,11 @@ html[data-theme-mode="light"] .theme-toggle svg.theme-icon-when-light {
 }
 
 /* AdminLTE reserves 48px for its original navbar; Richmin's topbar is 64px. */
+html,
+body {
+  overflow-x: hidden;
+}
+
 .layout-navbar-fixed .wrapper .content-wrapper {
   margin-top: 64px !important;
 }
